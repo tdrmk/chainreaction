@@ -1,0 +1,52 @@
+{
+  "name": "chain-reaction",
+  "version": "1.0.0",
+  "description": "An online multiplayer chain reaction game",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "nodemon --watch server/ -r dotenv/config server/index.js",
+    "start": "NODE_ENV=production node server/index.js",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tdrmk/chainreaction.git"
+  },
+  "keywords": [
+    "chainreaction",
+    "chain",
+    "reaction",
+    "multiplayer",
+    "game"
+  ],
+  "author": "tdrk <tdrmk@pm.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tdrmk/chainreaction/issues"
+  },
+  "homepage": "https://github.com/tdrmk/chainreaction#readme",
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.12",
+    "webpack": "^5.46.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.3.3",
+    "autoprefixer": "^10.3.1",
+    "css-loader": "^6.2.0",
+    "css-minimizer-webpack-plugin": "^3.0.2",
+    "debug": "^4.3.2",
+    "express": "^4.17.1",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.1.0",
+    "multer": "^1.4.2",
+    "postcss": "^8.3.6",
+    "postcss-loader": "^6.1.1",
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "^2.2.7"
+  }
+}

@@ -1,13 +1,29 @@
 const express = require("express");
+const session = require("express-session");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const { createServer } = require("http");
 const multer = require("multer");
 const path = require("path");
-const debug = require("debug")("chainreaction:server");
+const debug = require("debug")("chainreaction");
 
-const { createServer } = require("http");
+require("./config/passport"); // configure passport
 
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 8090;
 
+// connect to mongodb
+mongoose.connect(process.env.DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
+
+mongoose.connection.once("open", function () {
+  debug("connected to mongodb");
+});
+
+// express app
 const upload = multer();
 const app = express();
 
@@ -22,6 +38,12 @@ app.use(
   "/static",
   express.static(path.join(__dirname, "../dist"), servestaticoptions)
 );
+
+app.use(session(require("./config/session")));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/user", require("./routes/user"));
 
 app.get("*", (req, res) => {
   // SPA, always return index.html for any route

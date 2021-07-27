@@ -88,6 +88,11 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
+"@tdrmk/avatarmaker@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@tdrmk/avatarmaker/-/avatarmaker-1.0.12.tgz#adf4e9b0300e589c73de0a0bc740468098d364ba"
+  integrity sha512-6oJ+ILk34vrvJFrOHLklWqkl0G4IvB1C0jF/kH+dsUGfeZSNSkCCdEFHDbxVMpIqSSWE8GSV0CzST5ickMDmaw==
+
 "@trysound/sax@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.1.1.tgz#3348564048e7a2d7398c935d466c0414ebb6a669"

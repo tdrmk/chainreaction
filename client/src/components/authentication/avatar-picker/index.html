@@ -1,0 +1,64 @@
+<div class="flex flex-col w-max p-2 border-2 rounded-md">
+  <div class="flex flex-row justify-center font-bold text-gray-700">
+    Customise your Avatar!
+  </div>
+  <div class="flex flex-col md:flex-row w-max">
+    <div class="flex flex-col justify-center items-center p-2 md:order-2">
+      <div class="w-40 h-40 rounded-2xl overflow-hidden relative">
+        <div id="avatar">
+          <!-- generated avatar goes in here -->
+        </div>
+        <div class="absolute right-0 top-0 w-6 h-6">
+          <button
+            id="reset"
+            class="
+              hover:bg-blue-400
+              rounded-full
+              hover:bg-opacity-50
+              w-full
+              h-full
+              block
+              transition-transform
+              duration-300
+              ease-in-out
+              transform
+              hover:rotate-90
+            "
+          >
+            <svg class="fill-current text-black" viewBox="0 0 24 24">
+              <path
+                d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="md:contents flex flex-row">
+      <div class="flex flex-col w-28 justify-evenly m-1 md:order-1">
+        <avatar-spinner name="gender">
+          <option value="male">male</option>
+          <option value="female">female</option>
+        </avatar-spinner>
+        <avatar-spinner name="face"></avatar-spinner>
+        <avatar-spinner name="nose"></avatar-spinner>
+        <avatar-spinner name="mouth"></avatar-spinner>
+        <avatar-spinner name="ears"></avatar-spinner>
+
+        <avatar-spinner name="clothes"></avatar-spinner>
+        <avatar-spinner name="backs"></avatar-spinner>
+      </div>
+
+      <div class="flex flex-col w-28 justify-evenly m-1 md:order-3">
+        <avatar-spinner name="eyes"></avatar-spinner>
+        <avatar-spinner name="iris"></avatar-spinner>
+        <avatar-spinner name="brows"></avatar-spinner>
+        <avatar-spinner name="glasses"></avatar-spinner>
+
+        <avatar-spinner name="hair"></avatar-spinner>
+        <avatar-spinner name="mustache"></avatar-spinner>
+        <avatar-spinner name="beard"></avatar-spinner>
+      </div>
+    </div>
+  </div>
+</div>

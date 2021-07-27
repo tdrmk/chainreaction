@@ -7,7 +7,7 @@
     "dev": "nodemon --watch server/ -r dotenv/config server/index.js",
     "start": "DEBUG=chainreaction* NODE_ENV=production node server/index.js",
     "build": "NODE_ENV=production webpack --config webpack.prod.js",
-    "watch": "webpack --config webpack.dev.js"
+    "watch": "webpack --config webpack.dev.js --watch"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@tdrmk/avatarmaker": "^1.0.12",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
     "debug": "^4.3.2",

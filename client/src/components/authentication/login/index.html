@@ -1,0 +1,93 @@
+<div class="flex justify-center h-full md:items-center">
+  <div
+    class="
+      bg-white
+      w-max
+      p-4
+      m-4
+      md:rounded-2xl md:border md:p-12 md:border-gray-300 md:w-96
+      box-content
+    "
+  >
+    <chain-reaction-logo></chain-reaction-logo>
+    <p class="font-medium text-sm mb-4 text-gray-600">
+      Use your Chain Reaction Account
+    </p>
+    <form novalidate autocomplete="off">
+      <div class="my-4">
+        <label
+          for="username"
+          class="block mb-2 text-sm font-bold text-gray-700"
+        >
+          Username
+        </label>
+        <input
+          class="w-full text-sm border rounded-lg border-gray-300"
+          type="text"
+          name="username"
+          id="username"
+        />
+        <div id="username-error" class="text-xs text-red-500"></div>
+      </div>
+      <div class="my-4">
+        <label
+          for="password"
+          class="block mb-2 text-sm font-bold text-gray-700"
+        >
+          Password
+        </label>
+        <input
+          class="w-full text-sm border rounded-lg border-gray-300"
+          type="password"
+          name="password"
+          id="password"
+        />
+        <div id="password-error" class="text-xs text-red-500"></div>
+      </div>
+      <div class="my-4 flex flex-row justify-between">
+        <div class="mr-6">
+          <input id="remember-me" type="checkbox" class="mr-1 w-3 h-3" />
+          <label class="text-sm text-gray-600">Remember me</label>
+        </div>
+        <div>
+          <a
+            class="inline-block text-sm text-blue-500 hover:text-blue-700"
+            href="/forgot-password"
+            is="nav-link"
+            >Forgot password?</a
+          >
+        </div>
+      </div>
+      <div class="mt-6 mb-4">
+        <button
+          type="submit"
+          class="
+            w-full
+            px-4
+            py-2
+            font-bold
+            text-white
+            bg-blue-500
+            hover:bg-blue-600
+            disabled:opacity-50 disabled:bg-blue-400
+            rounded-full
+          "
+        >
+          Login
+        </button>
+      </div>
+    </form>
+    <hr />
+    <div class="text-center mt-4">
+      <span class="inline-block text-sm">
+        New user?
+        <a
+          class="text-blue-500 hover:text-blue-700"
+          href="/signup"
+          is="nav-link"
+          >Create an account!</a
+        >
+      </span>
+    </div>
+  </div>
+</div>

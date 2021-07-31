@@ -44,6 +44,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/user", require("./routes/user"));
+app.use("/session", require("./routes/session"));
 
 app.get("*", (req, res) => {
   // SPA, always return index.html for any route
@@ -59,5 +60,6 @@ app.use((err, req, res, next) => {
   res.sendStatus(500); // internal server error
 });
 const httpserver = createServer(app);
+require("./socket")(httpserver);
 
 httpserver.listen(port, () => debug(`listening on *:${port}`));

@@ -63,6 +63,7 @@ module.exports = function (httpserver) {
       });
 
     socket.on("user-message", (message) => {
+      session.appendmessage(user.username, message);
       debug(`${user.username} sent message "${message}" to ${gameid}`);
       nsp.to(gameroom).emit("user-message", {
         username: user.username,

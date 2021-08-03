@@ -14,6 +14,7 @@ class Session extends EventEmitter {
     this.gameid = gameid;
     this.admin = admin;
     this.state = Session.STATES.NEW;
+    this.messages = []; // user messages
 
     /** @type {Player[]} */ this.players = [];
     this.gameconfig = undefined;
@@ -126,6 +127,10 @@ class Session extends EventEmitter {
     }
 
     this.games.push(new ChainReaction(this.gameconfig, this.players));
+  }
+
+  appendmessage(username, message) {
+    this.messages.push({ username, message });
   }
 
   getplayer(user) {

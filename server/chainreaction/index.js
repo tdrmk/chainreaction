@@ -1,6 +1,7 @@
 const Session = require("./session");
 const wordpair = require("random-word-pairs");
 const debug = require("debug")("chainreaction:gc");
+const GameSession = require("../models/gamesession");
 
 /** @type {Object.<string, Session>} */
 const sessions = {};
@@ -49,16 +50,21 @@ function getsessiondetails(session) {
     gamedetails.turn = game.turn;
     gamedetails.mass = session.players.map((player, turn) => game.mass(turn));
 
-    // compute next turns, disconnected and eliminated players
-    gamedetails.nextturns = [];
-    gamedetails.disconnected = [];
-    gamedetails.eliminated = [];
-    for (let i = 1; i < session.players.length; i++) {
+    // compute upcoming turns (including current),
+    // disconnected players (who can join back and continue playing)
+    // and eliminated players (who may or may not be connected)
+    gamedetails.turns = {
+      upcoming: [],
+      disconnected: [],
+      eliminated: [],
+    };
+
+    for (let i = 0; i < session.players.length; i++) {
       const turn = (game.turn + i) % session.players.length;
-      if (game.eliminated(turn)) gamedetails.eliminated.push(turn);
+      if (game.eliminated(turn)) gamedetails.turns.eliminated.push(turn);
       else if (!session.players[turn].active)
-        gamedetails.disconnected.push(turn);
-      else gamedetails.nextturns.push(turn);
+        gamedetails.turns.disconnected.push(turn);
+      else gamedetails.turns.upcoming.push(turn);
     }
   }
 
@@ -86,7 +92,27 @@ const unmark = (gameid, reason) => {
   debug(`unmarking ${gameid} reason:${reason}`);
 };
 const collect = (gameid, reason) => {
+  const session = sessions[gameid];
+  const sessiondetails = getsessiondetails(session);
+
+  // save session before deleting
+  const gamesession = new GameSession({
+    gameid: sessiondetails.gameid,
+    admin: sessiondetails.admin,
+    state: session.state,
+    gameconfig: session.gameconfig,
+    rounds: session.rounds,
+    players: sessiondetails.players,
+    games: session.games,
+    messages: session.messages,
+  });
+
+  gamesession.save((err) => {
+    if (err) debug(err);
+  });
+
   delete sessions[gameid];
+
   debug(`deleting ${gameid} reason:${reason}`);
 };
 setInterval(() => {

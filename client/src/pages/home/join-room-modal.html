@@ -1,0 +1,34 @@
+<app-modal>
+  <section class="flex flex-col p-4">
+    <h1 class="font-bold text-2xl text-gray-500 text-center mb-4">Join Room</h1>
+    <form novalidate autocomplete="off" class="contents">
+      <label for="room-id" class="block mb-0.5 text-sm font-bold text-gray-700"
+        >Room ID</label
+      >
+      <input
+        class="w-full text-sm border rounded-lg border-gray-300"
+        type="text"
+        name="room-id"
+        id="room-id"
+      />
+      <button
+        class="
+          align-bottom
+          my-2
+          px-4
+          py-2
+          font-bold
+          text-white
+          bg-blue-500
+          hover:bg-blue-600
+          disabled:opacity-50 disabled:bg-blue-400
+          rounded
+          self-end
+        "
+        type="submit"
+      >
+        JOIN
+      </button>
+    </form>
+  </section>
+</app-modal>

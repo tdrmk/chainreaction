@@ -3,6 +3,8 @@ import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
 
 import debug from "debug";
+import HomePage from "./pages/home";
+import GamePage from "./pages/game";
 
 let log = debug("router");
 
@@ -21,6 +23,24 @@ const ACCESS = {
 };
 
 const ROUTES = [
+  {
+    path: "/",
+    page: HomePage,
+    access: ACCESS.PRIVATE,
+    redirect: "/login",
+  },
+  {
+    path: "/home",
+    page: HomePage,
+    access: ACCESS.PRIVATE,
+    redirect: "/login",
+  },
+  {
+    path: "/game/:gameid",
+    page: GamePage,
+    access: ACCESS.PRIVATE,
+    redirect: "/login",
+  },
   {
     path: "/login",
     page: LoginPage,

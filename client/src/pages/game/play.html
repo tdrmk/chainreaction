@@ -1,0 +1,67 @@
+<div class="flex flex-col w-max mx-auto">
+  <header class="m-4 flex flex-row justify-between">
+    <chain-reaction-logo></chain-reaction-logo>
+    <div class="flex flex-row">
+      <avatar-viewer
+        id="avatar"
+        class="w-10 h-10 rounded-full overflow-hidden"
+      ></avatar-viewer>
+      <span
+        id="username"
+        class="
+          ml-2
+          text-sm
+          font-extrabold
+          text-gray-600
+          flex flex-col
+          justify-center
+        "
+      ></span>
+    </div>
+  </header>
+  <main class="flex w-max">
+    <aside class="m-4 flex flex-col w-56">
+      <section>
+        <h1 class="text-lg font-bold text-gray-600 mb-2 text-center">
+          Score Board
+        </h1>
+        <leader-board id="scoreboard"></leader-board>
+      </section>
+
+      <section class="mt-4">
+        <h1 class="text-lg font-bold text-gray-600 mb-2 text-center">
+          Next Turn
+        </h1>
+        <leader-board id="turnboard"></leader-board>
+      </section>
+
+      <div class="flex-grow"></div>
+      <button
+        class="
+          m-1
+          flex
+          p-2
+          rounded
+          text-white
+          bg-blue-400
+          hover:bg-blue-500
+          justify-center
+          disabled:opacity-50 disabled:bg-blue-400 disabled:cursor-wait
+        "
+        id="endround"
+      >
+        End Round
+      </button>
+    </aside>
+    <section class="m-4 flex flex-col">
+      <p class="text-lg font-bold text-gray-600 mb-2 text-center">
+        Round <span id="round"></span> of <span id="rounds"></span>
+      </p>
+      <chain-reaction></chain-reaction>
+    </section>
+    <section class="m-4">
+      <app-chat class="w-96 h-full"></app-chat>
+    </section>
+  </main>
+  <footer></footer>
+</div>

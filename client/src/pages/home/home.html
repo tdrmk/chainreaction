@@ -1,0 +1,139 @@
+<div
+  class="
+    flex flex-col
+    items-center
+    sm:items-stretch sm:flex-row
+    xl:justify-center
+  "
+>
+  <aside class="flex flex-col p-4 w-56">
+    <section class="flex flex-col p-4 border-2 rounded-lg">
+      <!-- [profile information] -->
+      <avatar-viewer
+        class="w-40 h-40 rounded-2xl overflow-hidden"
+      ></avatar-viewer>
+      <p class="text-center text-gray-500 text-base">
+        Welcome,
+        <span class="text-gray-500 font-bold text-lg" id="username"></span>!
+      </p>
+      <p class="text-center text-gray-700 text-xs">
+        Joined on <span id="created-at"></span>
+      </p>
+    </section>
+    <div class="lg:flex-grow"></div>
+    <div>
+      <div class="my-2">
+        <button
+          class="
+            inline-flex
+            items-center
+            w-full
+            p-2
+            pr-4
+            bg-blue-400
+            hover:bg-blue-500
+            disabled:cursor-wait disabled:opacity-50 disabled:bg-blue-400
+          "
+          id="create-room"
+        >
+          <span class="inline-block w-8 h-8">
+            <svg viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+              ></path>
+            </svg>
+          </span>
+          <span class="flex-grow text-center"> Create Room </span>
+        </button>
+      </div>
+      <div class="my-2">
+        <button
+          class="
+            inline-flex
+            items-center
+            w-full
+            p-2
+            pr-4
+            bg-red-400
+            hover:bg-red-500
+            disabled:cursor-wait disabled:opacity-50 disabled:bg-red-400
+          "
+          id="join-room"
+        >
+          <span class="inline-block w-8 h-8">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+            </svg>
+          </span>
+          <span class="flex-grow text-center"> Join Room </span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex flex-col p-4 flex-grow xl:flex-grow-0 xl:w-max">
+    <!-- [information] -->
+    <article class="xl:max-w-3xl">
+      <!-- [description] -->
+      <chain-reaction-logo></chain-reaction-logo>
+      <p class="text-sm text-gray-600 font-medium my-4">
+        The objective of Chain Reaction is to take control of the board by
+        eliminating your opponent's orbs.
+      </p>
+      <p class="text-sm text-gray-600 font-medium my-4">
+        Players take it in turns to place their orbs in a cell. Once a cell has
+        reached critical mass the orbs explode into the surrounding cells adding
+        an extra orb and claiming the cell for the player. A player may only
+        place their orbs in a blank cell or a cell that contains orbs of their
+        own colour. As soon as a player looses all their orbs they are out of
+        the game.
+      </p>
+    </article>
+    <section class="flex flex-col lg:flex-row">
+      <article class="xl:max-w-lg">
+        <header class="text-xl text-gray-500 mb-2 mt-4 font-bold">
+          Rules of the Game
+        </header>
+        <p class="text-sm text-gray-500 my-2">
+          Chain Reaction is a deterministic combinatorial game of perfect
+          information for 2-8 players. The gameplay takes place in an
+          <i><b>m</b> x <b>n</b></i> board.
+        </p>
+        <p class="text-sm text-gray-500 my-2">
+          For each cell in the board, we define a critical mass. The critical
+          mass is equal to the number of orthogonally adjacent cells. That would
+          be 4 for usual cells, 3 for cells in the edge and 2 for cells in the
+          corner.
+        </p>
+        <p class="text-sm text-gray-500 my-2">
+          All cells are initially empty. Players take turn to place "orbs" of
+          their corresponding colors. Aplayer can only place an orb in an empty
+          cell or a cell which already contains one or more orbs of their color.
+          When two or more orbs are placed in the same cell, they stack up.
+        </p>
+        <p class="text-sm text-gray-500 my-2">
+          When a cell is loaded with a number of orbs equal to its critical
+          mass, the stack immediately explodes. As a result of the explosion, to
+          each of the orthogonally adjacent cells, an orb is added and the
+          initial cell looses as many orbs as its critical mass. The explosions
+          might result in overloading of an adjacent cell and the chain reaction
+          of explosion continues until every cell is stable.
+        </p>
+        <p class="text-sm text-gray-500 my-2">
+          When a cell explodes, the surrounding cells with opponent's orbs are
+          converted to player's color and the other rules of explosions still
+          follow.
+        </p>
+        <p class="text-sm text-gray-500 my-2">
+          The winner is the one who eliminates every other player's orbs.
+        </p>
+        <footer class="text-sm italic font-bold text-gray-600 mt-4">
+          Checkout <b class="text-black">Try it Now</b> to play against yourself
+          and learn the game.
+        </footer>
+      </article>
+      <chain-reaction-local class="block ml-4 px-4"></chain-reaction-local>
+    </section>
+  </div>
+</div>

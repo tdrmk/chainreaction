@@ -1,0 +1,102 @@
+<div class="flex flex-col">
+  <header class="m-4 flex flex-row">
+    <chain-reaction-logo></chain-reaction-logo>
+  </header>
+  <main class="flex flex-col md:flex-row">
+    <section class="flex flex-col w-64 mx-2 p-4 rounded-lg border-2">
+      <h1 class="text-gray-600 font-bold text-xl select-none">
+        Game Configuration
+      </h1>
+      <label class="text-gray-500 text-sm select-none">Game ID:</label>
+      <input
+        type="text"
+        id="gameid"
+        class="text-lg text-red-500 text-center font-bold p-2 rounded border-0"
+        readonly
+      />
+      <p class="text-xs text-gray-500 select-none text-center">
+        Invite your friends, send them the game id
+      </p>
+      <form novalidate autocomplete="off" class="contents">
+        <div class="my-4">
+          <label for="rows" class="block mb-0.5 text-sm font-bold text-gray-700"
+            >Rows</label
+          >
+          <select class="w-full text-sm" name="rows" id="rows">
+            <option value="7">7 Rows</option>
+            <option value="8">8 Rows</option>
+            <option value="9" selected>9 Rows</option>
+            <option value="10">10 Rows</option>
+            <option value="11">11 Rows</option>
+            <option value="12">12 Rows</option>
+            <option value="13">13 Rows</option>
+            <option value="14">14 Rows</option>
+            <option value="15">15 Rows</option>
+          </select>
+        </div>
+        <div class="my-4">
+          <label
+            for="columns"
+            class="block mb-0.5 text-sm font-bold text-gray-700"
+            >Columns</label
+          >
+          <select class="w-full text-sm" name="columns" id="columns">
+            <option value="4">4 Rows</option>
+            <option value="5" selected>5 Rows</option>
+            <option value="6">6 Rows</option>
+            <option value="7">7 Rows</option>
+            <option value="8">8 Rows</option>
+            <option value="9">9 Rows</option>
+            <option value="10">10 Rows</option>
+          </select>
+        </div>
+        <div class="my-4">
+          <label
+            for="rounds"
+            class="block mb-0.5 text-sm font-bold text-gray-700"
+            >Rounds</label
+          >
+          <select class="w-full text-sm" name="rounds" id="rounds">
+            <option value="1">1 Round</option>
+            <option value="2">2 Rounds</option>
+            <option value="3" selected>3 Rounds</option>
+            <option value="4">4 Rounds</option>
+            <option value="5">5 Rounds</option>
+            <option value="6">6 Rounds</option>
+            <option value="7">7 Rounds</option>
+            <option value="8">8 Rounds</option>
+          </select>
+        </div>
+        <div class="flex-grow"></div>
+        <div class="mt-8">
+          <button
+            type="submit"
+            class="
+              inline-flex
+              w-full
+              p-2
+              text-white
+              bg-blue-400
+              hover:bg-blue-500
+              justify-center
+              disabled:opacity-50 disabled:bg-blue-400 disabled:cursor-wait
+            "
+          >
+            Start Game
+          </button>
+          <p
+            id="notadmin"
+            class="text-xs text-blue-500 select-none text-center"
+          >
+            wait for admin to start the game!
+          </p>
+        </div>
+      </form>
+    </section>
+    <section class="flex-grow max-w-2xl mx-2 p-4">
+      <h1 class="text-gray-600 font-bold text-xl select-none mb-2">Players</h1>
+      <div id="players" class="flex flex-wrap"></div>
+    </section>
+  </main>
+  <footer></footer>
+</div>

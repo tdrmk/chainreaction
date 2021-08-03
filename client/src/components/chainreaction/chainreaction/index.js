@@ -39,7 +39,7 @@ class ChainReaction extends HTMLElement {
     this.animating = false;
 
     // event handlers
-    this.shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       const cell = event.target.closest("chain-reaction-cell");
       if (!cell || this.disabled || this.gameover || this.animating) return;
       if (this.turn !== this.player) return;

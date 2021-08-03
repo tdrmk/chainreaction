@@ -1,6 +1,15 @@
 import "./utils/logo";
 import "./utils/toast";
 import "./utils/spinner";
+import "./utils/modal";
+import "./utils/avatar-viewer";
+import "./utils/chat";
+import "./utils/chat/user-message";
+import "./utils/chat/other-message";
+import "./utils/chat/status-message";
+import "./utils/leader-board/container";
+import "./utils/leader-board/player-score";
+import "./utils/leader-board/player-turn";
 
 import "./navigation/navlink";
 import "./navigation/redirect";

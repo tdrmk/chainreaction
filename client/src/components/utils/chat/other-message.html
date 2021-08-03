@@ -1,0 +1,30 @@
+<div class="flex justify-start my-0.5">
+  <div class="self-start mr-2 w-10 h-10 rounded-full overflow-hidden">
+    <slot name="avatar">
+      <!-- profile pic goes in here -->
+    </slot>
+  </div>
+  <div
+    class="
+      flex flex-col
+      py-1
+      px-2
+      max-w-xs
+      text-xs
+      rounded-tl-none rounded-lg
+      bg-gray-300
+      text-gray-600
+    "
+  >
+    <div class="font-bold">
+      <slot name="username">
+        <!-- username -->
+      </slot>
+    </div>
+    <div>
+      <slot name="message">
+        <!-- message -->
+      </slot>
+    </div>
+  </div>
+</div>

@@ -18,3 +18,7 @@ import "./authentication/login";
 import "./authentication/signup";
 import "./authentication/avatar-picker";
 import "./authentication/avatar-picker/spinner";
+
+import "./chainreaction/chainreaction/cell";
+import "./chainreaction/chainreaction";
+import "./chainreaction/local";

@@ -10,6 +10,7 @@ import "./utils/chat/status-message";
 import "./utils/leader-board/container";
 import "./utils/leader-board/player-score";
 import "./utils/leader-board/player-turn";
+import "./utils/feedback";
 
 import "./navigation/navlink";
 import "./navigation/redirect";

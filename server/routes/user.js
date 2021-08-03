@@ -3,7 +3,6 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
-const Feedback = require("../models/feedback");
 const debug = require("debug")("chainreaction:user");
 
 const router = express.Router();
@@ -51,16 +50,6 @@ router.get("/details", checkAuthenticated, (req, res) => {
     avatar_id: req.user.avatar_id,
     createdAt: req.user.createdAt,
   });
-});
-
-router.post("/feedback", (req, res) => {
-  // allow user to post feedback
-  let { feedback } = req.body;
-  const username = req.user?.username; // optional
-  new Feedback({ username, feedback }).save((err) => {
-    if (err) debug(err);
-  });
-  res.sendStatus(StatusCodes.OK);
 });
 
 function checkAuthenticated(req, res, next) {

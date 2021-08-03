@@ -45,6 +45,7 @@ app.use(passport.session());
 
 app.use("/user", require("./routes/user"));
 app.use("/session", require("./routes/session"));
+app.use("/misc", require("./routes/misc"));
 
 app.get("*", (req, res) => {
   // SPA, always return index.html for any route

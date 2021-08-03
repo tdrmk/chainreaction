@@ -19,7 +19,7 @@ class Feedback extends HTMLElement {
         const form = modalfragment.querySelector("form");
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
-          await fetch("/user/feedback", {
+          await fetch("/misc/feedback", {
             method: "POST",
             body: new FormData(form),
           });

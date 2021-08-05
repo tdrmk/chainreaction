@@ -5,38 +5,43 @@
     </slot>
   </div>
   <div class="flex-grow-0 flex flex-row px-4 pt-2 pb-1">
-    <input
-      class="
-        flex-grow
-        h-8
-        bg-gray-200
-        rounded-full
-        border-0
-        px-4
-        focus:placeholder-gray-400
-        text-gray-600 text-xs
-        placeholder-gray-600
-      "
-      type="text"
-      placeholder="Enter message.."
-    />
+    <form novalidate autocomplete="off" class="contents">
+      <textarea
+        name="message"
+        placeholder="Enter message.."
+        class="
+          flex-grow
+          bg-gray-200
+          rounded
+          border-0
+          px-4
+          resize-none
+          focus:placeholder-gray-400
+          text-gray-600 text-xs
+          placeholder-gray-600
+        "
+        rows="1"
+      ></textarea>
 
-    <button
-      class="
-        flex-grow-0
-        w-8
-        h-8
-        ml-2
-        text-white
-        bg-blue-500
-        hover:bg-blue-400
-        p-2
-        rounded-full
-      "
-    >
-      <svg viewBox="0 0 24 24">
-        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"></path>
-      </svg>
-    </button>
+      <button
+        class="
+          flex-grow-0
+          w-8
+          h-8
+          ml-2
+          text-white
+          bg-blue-500
+          hover:bg-blue-400
+          p-2
+          rounded-full
+          self-start
+        "
+        type="submit"
+      >
+        <svg viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"></path>
+        </svg>
+      </button>
+    </form>
   </div>
 </div>

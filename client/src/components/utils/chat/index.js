@@ -2,6 +2,7 @@ import { createTemplate } from "../../../utils/shadowdom";
 import htmlcontents from "./index.html";
 
 const template = createTemplate(htmlcontents, { display: "block" });
+const MAX_HEIGHT = 96; //in px
 
 /*
 
@@ -22,19 +23,41 @@ class Chat extends HTMLElement {
     this.addOtherMessage = this.handleScroll(this.addOtherMessage);
     this.addStatusMessage = this.handleScroll(this.addStatusMessage);
 
-    const submitbutton = this.shadowRoot.querySelector("button");
-    submitbutton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const input = this.shadowRoot.querySelector("input");
-      const message = input.value.trim();
+    const form = this.shadowRoot.querySelector("form");
+    const textarea = this.shadowRoot.querySelector("textarea");
 
+    // handle user inputs
+    const updateheight = () => {
+      textarea.style.height = "auto"; // to help auto-shrink
+      textarea.style.height = `${Math.min(
+        textarea.scrollHeight,
+        MAX_HEIGHT
+      )}px`;
+    };
+
+    const handlesubmit = () => {
+      const message = textarea.value.trim();
       if (message) {
         // this.addUserMessage(message);
         this.dispatchEvent(
           new CustomEvent("user-message", { detail: message })
         );
       }
-      input.value = "";
+      textarea.value = "";
+      updateheight();
+    };
+
+    textarea.addEventListener("input", (event) => updateheight());
+    textarea.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); // don't add new line
+        return handlesubmit();
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // we'll handle form submit
+      handlesubmit();
     });
   }
 

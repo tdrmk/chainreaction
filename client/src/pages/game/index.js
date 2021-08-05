@@ -16,6 +16,7 @@ export default class GamePage extends DefaultPage {
 
   unmount() {
     if (this.socket) this.socket.disconnect();
+    if (this.page) page.unmount?.();
   }
 
   connect() {

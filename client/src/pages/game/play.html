@@ -1,4 +1,4 @@
-<div class="flex flex-col w-max mx-auto">
+<div class="flex flex-col w-max mx-auto items-stretch">
   <header class="m-4 flex flex-row justify-between">
     <chain-reaction-logo></chain-reaction-logo>
     <div class="flex flex-row">
@@ -59,8 +59,13 @@
       </p>
       <chain-reaction></chain-reaction>
     </section>
-    <section class="m-4">
-      <app-chat class="w-96 h-full"></app-chat>
+    <section class="m-4 w-96 flex flex-col">
+      <h1 class="text-lg font-bold text-gray-600 mb-2 text-center">Messages</h1>
+      <div class="flex-grow relative">
+        <div class="absolute top-0 bottom-0 left-0 right-0">
+          <app-chat class="w-full h-full"></app-chat>
+        </div>
+      </div>
     </section>
   </main>
   <footer></footer>

@@ -1,26 +1,53 @@
-<main class="flex w-max m-auto">
-  <aside class="m-4 mt-2 flex flex-col w-60">
-    <chain-reaction-logo class="mb-2"></chain-reaction-logo>
-    <leader-board id="scoreboard" observe="turnorder"></leader-board>
-    <div class="flex-grow"></div>
-    <button
+<main
+  class="
+    flex flex-col
+    items-center
+    lg:flex-row lg:items-stretch lg:justify-center
+  "
+>
+  <div class="contents lg:flex lg:flex-col xl:contents">
+    <aside class="flex flex-col m-4 mt-2 w-60 order-1 lg:w-96 xl:w-60">
+      <chain-reaction-logo class="mb-2"></chain-reaction-logo>
+      <leader-board id="scoreboard" observe="turnorder"></leader-board>
+      <div class="xl:flex-grow"></div>
+      <button
+        class="
+          m-1
+          flex
+          p-2
+          rounded
+          text-white
+          bg-blue-400
+          hover:bg-blue-500
+          justify-center
+          disabled:opacity-50 disabled:bg-blue-400 disabled:cursor-wait
+        "
+        id="endround"
+      >
+        End Round
+      </button>
+    </aside>
+
+    <section
       class="
-        m-1
-        flex
-        p-2
-        rounded
-        text-white
-        bg-blue-400
-        hover:bg-blue-500
-        justify-center
-        disabled:opacity-50 disabled:bg-blue-400 disabled:cursor-wait
+        flex flex-col
+        m-4
+        h-96
+        w-96
+        order-3
+        lg:flex-1
+        xl:h-auto xl:flex-initial
       "
-      id="endround"
     >
-      End Round
-    </button>
-  </aside>
-  <section class="m-4 flex flex-col">
+      <div class="flex-grow relative">
+        <div class="absolute top-0 bottom-0 left-0 right-0">
+          <app-chat class="w-full h-full"></app-chat>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="flex flex-col m-4 order-2">
     <p class="text-lg font-bold text-gray-600 mb-2 relative">
       Round <span id="round"></span> of <span id="rounds"></span>
       <span
@@ -41,12 +68,5 @@
       >
     </p>
     <chain-reaction></chain-reaction>
-  </section>
-  <section class="m-4 w-96 flex flex-col">
-    <div class="flex-grow relative">
-      <div class="absolute top-0 bottom-0 left-0 right-0">
-        <app-chat class="w-full h-full"></app-chat>
-      </div>
-    </div>
   </section>
 </main>

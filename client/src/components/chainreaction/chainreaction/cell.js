@@ -3,6 +3,7 @@ import orb1html from "./cell-orb1.html";
 import orb2html from "./cell-orb2.html";
 import orb3html from "./cell-orb3.html";
 import orbcriticalhtml from "./cell-orb-critical.html";
+import twcolors from "tailwindcss/colors";
 import { createTemplate } from "../../../utils/shadowdom";
 import { getplayercolor } from "./utils";
 
@@ -10,7 +11,7 @@ const celltemplate = createTemplate(cellhtml);
 
 /*
   <chain-reaction-cell rows="" columns="" row="" column="" player="" mass="" ></chain-reaction-cell>
-
+  optional highlight - typically used to indicate previous move
   methods:
   increment(player)
   showexposion()
@@ -21,8 +22,7 @@ class Cell extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(celltemplate.content.cloneNode(true));
   }
-
-  static observedAttributes = ["player", "mass"];
+  static observedAttributes = ["player", "mass", "highlight"];
   attributeChangedCallback(attr, oldvalue, newvalue) {
     switch (attr) {
       case "player":
@@ -40,6 +40,11 @@ class Cell extends HTMLElement {
             : mass === 3
             ? orb3html
             : "";
+        break;
+      case "highlight":
+        const bgcolor =
+          newvalue === null ? twcolors.white : twcolors.blueGray[300];
+        this.shadowRoot.querySelector("div").style.backgroundColor = bgcolor;
         break;
     }
   }

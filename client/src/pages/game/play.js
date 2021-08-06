@@ -205,5 +205,6 @@ function resetchainreaction(chainreaction) {
   chainreaction.querySelectorAll("chain-reaction-cell").forEach((cell) => {
     cell.setAttribute("mass", 0);
     cell.setAttribute("player", 0);
+    cell.removeAttribute("highlight");
   });
 }

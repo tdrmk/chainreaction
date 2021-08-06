@@ -37,6 +37,7 @@ class ChainReaction extends HTMLElement {
 
     // state variables
     this.animating = false;
+    this.lastcell = undefined; // cell selected in last move
 
     // event handlers
     this.addEventListener("click", (event) => {
@@ -77,9 +78,12 @@ class ChainReaction extends HTMLElement {
   }
 
   async add(player, { row, column }, animate = true) {
+    this.lastcell?.toggleAttribute("highlight", false);
     this.animating = true;
     this.setAttribute("turn", player);
     const cell = this.cell(row, column);
+    this.lastcell = cell;
+    this.lastcell.toggleAttribute("highlight", true);
     const critical = cell.increment(player);
     if (critical) await this.triggerchainreaction([cell], animate);
     this.animating = false;

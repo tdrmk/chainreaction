@@ -31,15 +31,11 @@ export default class PlayPage {
     const scoreboard = playpage.querySelector("#scoreboard");
     const chat = playpage.querySelector("app-chat");
     const endroundbutton = playpage.querySelector("#endround");
-    const username = playpage.querySelector("#username");
-    const avatar = playpage.querySelector("#avatar");
 
     // populate template
-    username.textContent = this.user.username;
-    avatar.setAttribute("avatar-id", this.user.avatar_id);
     scoreboard.append(
       ...players.map(({ username, avatar_id }, turn) =>
-        this.renderplayerscore(username, turn, avatar_id)
+        this.renderplayerscore(username, turn, avatar_id, admin)
       )
     );
     chat.setAttribute("username", this.user.username);
@@ -114,9 +110,14 @@ export default class PlayPage {
       },
     } = sessiondetails;
 
+    const myturn = players[turn].username === this.user.username && !gameover;
     // handle round updates
     root.querySelector("#round").textContent = `${round}`;
     root.querySelector("#rounds").textContent = `${rounds}`;
+    root.querySelector("#turn-indicator").style.visibility = myturn
+      ? "visible"
+      : "hidden";
+
     const endroundbtn = root.querySelector("#endround");
     if (endroundbtn) {
       endroundbtn.style.visibility = gameover ? "visible" : "hidden";
@@ -181,9 +182,13 @@ export default class PlayPage {
   }
 
   // ========= utilities ==========
-  renderplayerscore = (username, turn, avatar_id) => {
+  renderplayerscore = (username, turn, avatar_id, admin) => {
+    let description;
+    if (username === admin) description = "(admin)";
+    if (username === this.user.username) description = "(you)";
     const playerscore = document.createElement("player-score");
     playerscore.setAttribute("username", username);
+    if (description) playerscore.setAttribute("description", description);
     playerscore.setAttribute("turn", turn);
     playerscore.setAttribute("avatar-id", avatar_id);
     playerscore.setAttribute("score", 0);

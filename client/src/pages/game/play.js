@@ -29,7 +29,6 @@ export default class PlayPage {
     const playpage = template.content.cloneNode(true);
     const chainreaction = playpage.querySelector("chain-reaction");
     const scoreboard = playpage.querySelector("#scoreboard");
-    const turnboard = playpage.querySelector("#turnboard");
     const chat = playpage.querySelector("app-chat");
     const endroundbutton = playpage.querySelector("#endround");
     const username = playpage.querySelector("#username");
@@ -41,11 +40,6 @@ export default class PlayPage {
     scoreboard.append(
       ...players.map(({ username, avatar_id }, turn) =>
         this.renderplayerscore(username, turn, avatar_id)
-      )
-    );
-    turnboard.append(
-      ...players.map(({ username }, turn) =>
-        this.renderplayerturn(username, turn)
       )
     );
     chat.setAttribute("username", this.user.username);
@@ -155,23 +149,34 @@ export default class PlayPage {
         .querySelector(`player-score[username='${username}']`)
         .setAttribute("score", score);
       root
-        .querySelector(`player-turn[username='${username}']`)
+        .querySelector(`player-score[username='${username}']`)
         .setAttribute("state", state);
     });
-    upcoming.forEach((turn, index) => {
+    // order the entries on leaderboard
+    let turnorder = players.length;
+    upcoming.forEach((turn) => {
       root
-        .querySelector(`player-turn[turn='${turn}']`)
-        .setAttribute("score", 10000 - index);
+        .querySelector(`player-score[turn='${turn}']`)
+        .setAttribute("turnorder", turnorder--);
+      root
+        .querySelector(`player-score[turn='${turn}']`)
+        .removeAttribute("eliminated");
     });
-    disconnected.forEach((turn, index) => {
+    disconnected.forEach((turn) => {
       root
-        .querySelector(`player-turn[turn='${turn}']`)
-        .setAttribute("score", 1000 - index);
+        .querySelector(`player-score[turn='${turn}']`)
+        .setAttribute("turnorder", turnorder--);
+      root
+        .querySelector(`player-score[turn='${turn}']`)
+        .removeAttribute("eliminated");
     });
-    eliminated.forEach((turn, index) => {
+    eliminated.forEach((turn) => {
       root
-        .querySelector(`player-turn[turn='${turn}']`)
-        .setAttribute("score", 100 - index);
+        .querySelector(`player-score[turn='${turn}']`)
+        .setAttribute("turnorder", turnorder--);
+      root
+        .querySelector(`player-score[turn='${turn}']`)
+        .setAttribute("eliminated", "true");
     });
   }
 
@@ -182,15 +187,8 @@ export default class PlayPage {
     playerscore.setAttribute("turn", turn);
     playerscore.setAttribute("avatar-id", avatar_id);
     playerscore.setAttribute("score", 0);
+    playerscore.setAttribute("turnorder", 0);
     return playerscore;
-  };
-
-  renderplayerturn = (username, turn) => {
-    const playerturn = document.createElement("player-turn");
-    playerturn.setAttribute("username", username);
-    playerturn.setAttribute("turn", turn);
-    playerturn.setAttribute("score", 0);
-    return playerturn;
   };
 }
 

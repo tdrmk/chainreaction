@@ -14,10 +14,14 @@ class LeaderBoard extends HTMLElement {
     this.observer = new MutationObserver(this.handlemutations);
   }
 
+  get observedAttribute() {
+    return this.getAttribute("observe") ?? "score";
+  }
+
   connectedCallback() {
     this.observer.observe(this, {
       attributes: true,
-      attributeFilter: ["score"],
+      attributeFilter: [this.observedAttribute],
       subtree: true,
     });
 
@@ -30,11 +34,12 @@ class LeaderBoard extends HTMLElement {
   }
 
   handlemutations = () => {
-    // children with `score` attribute
-    const items = this.querySelectorAll(":scope > [score]");
+    // children with `observedAttribute` attribute
+    const items = this.querySelectorAll(`:scope > [${this.observedAttribute}]`);
     const sorteditems = Array.from(items).sort(
       (item1, item2) =>
-        +item2.getAttribute("score") - +item1.getAttribute("score")
+        +item2.getAttribute(this.observedAttribute) -
+        +item1.getAttribute(this.observedAttribute)
     );
 
     // re-position the items (MUST be position: relative)

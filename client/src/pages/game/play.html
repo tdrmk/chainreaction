@@ -20,19 +20,12 @@
     </div>
   </header>
   <main class="flex w-max">
-    <aside class="m-4 flex flex-col w-56">
+    <aside class="m-4 flex flex-col w-60">
       <section>
         <h1 class="text-lg font-bold text-gray-600 mb-2 text-center">
-          Score Board
+          Turn Board
         </h1>
-        <leader-board id="scoreboard"></leader-board>
-      </section>
-
-      <section class="mt-4">
-        <h1 class="text-lg font-bold text-gray-600 mb-2 text-center">
-          Next Turn
-        </h1>
-        <leader-board id="turnboard"></leader-board>
+        <leader-board id="scoreboard" observe="turnorder"></leader-board>
       </section>
 
       <div class="flex-grow"></div>

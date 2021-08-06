@@ -1,22 +1,48 @@
-<div class="fixed right-0 top-3/4">
+<div
+  class="
+    flex
+    fixed
+    top-3/4
+    -right-20
+    hover:right-0
+    border
+    p-1
+    rounded-lg rounded-r-none
+    transition-all
+    duration-500
+  "
+>
   <button
+    id="feedback"
     class="
-      rounded
+      rounded rounded-r-none
       p-1
-      rounded-tr-none rounded-br-none
       border
-      bg-white bg-opacity-25
       shadow-md
+      bg-white bg-opacity-25
       hover:bg-gray-400 hover:bg-opacity-25
     "
   >
-    <svg
-      class="w-10 h-10 text-gray-600"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-    >
+    <svg class="w-8 h-8 text-red-400" fill="currentColor" viewBox="0 0 24 24">
       <path
         d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"
+      ></path>
+    </svg>
+  </button>
+  <button
+    id="info"
+    class="
+      rounded rounded-l-none
+      p-1
+      border
+      shadow-md
+      bg-white bg-opacity-25
+      hover:bg-gray-400 hover:bg-opacity-25
+    "
+  >
+    <svg viewBox="0 0 24 24" class="w-8 h-8 text-blue-400" fill="currentColor">
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
       ></path>
     </svg>
   </button>

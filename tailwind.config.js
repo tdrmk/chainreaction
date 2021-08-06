@@ -14,6 +14,7 @@ module.exports = {
       opacity: ["disabled"],
       backgroundColor: ["disabled"],
       cursor: ["disabled"],
+      inset: ["hover"],
     },
   },
   plugins: [require("@tailwindcss/forms")],

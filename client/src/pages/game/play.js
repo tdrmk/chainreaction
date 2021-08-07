@@ -1,6 +1,7 @@
 import htmlcontents from "./play.html";
 import { createTemplate } from "../../utils/shadowdom";
 import toast from "../../components/utils/toast";
+import { Deferred } from "../../utils/time";
 
 const template = createTemplate(htmlcontents, { display: "block" });
 
@@ -11,6 +12,7 @@ export default class PlayPage {
   constructor(user, socket) {
     this.user = user;
     this.socket = socket;
+    this.deferred = new Deferred("play");
   }
 
   render(sessiondetails) {
@@ -48,11 +50,6 @@ export default class PlayPage {
       players.findIndex((player) => player.username === this.user.username)
     );
     chainreaction.setAttribute("turn", turn);
-    // wait for it to get attached to DOM, to call methods on elements in template
-    setTimeout(
-      () => this.makemoves(chainreaction, sessiondetails, { animate: false }),
-      0
-    );
 
     if (this.user.username !== admin) endroundbutton.remove();
 
@@ -83,6 +80,11 @@ export default class PlayPage {
       });
     });
 
+    // Elements methods are accessible only after it attaches to DOM in case of template
+    this.deferred.chain(() =>
+      this.makemoves(chainreaction, sessiondetails, { animate: false })
+    );
+
     return playpage;
   }
 
@@ -109,30 +111,29 @@ export default class PlayPage {
         gameover,
       },
     } = sessiondetails;
-
-    const myturn = players[turn].username === this.user.username && !gameover;
-    // handle round updates
-    root.querySelector("#round").textContent = `${round}`;
-    root.querySelector("#rounds").textContent = `${rounds}`;
-    root.querySelector("#turn-indicator").style.visibility = myturn
-      ? "visible"
-      : "hidden";
-
-    const endroundbtn = root.querySelector("#endround");
-    if (endroundbtn) {
-      endroundbtn.style.visibility = gameover ? "visible" : "hidden";
-    }
-
-    // handle game updates
     const chainreaction = root.querySelector("chain-reaction");
-    if (this.round !== round) {
-      resetchainreaction(chainreaction);
-      toast(`Starting Round ${round}!`, "success");
-      this.round = round;
-      this.moves = [];
-    }
-    setTimeout(async () => {
-      await this.makemoves(chainreaction, sessiondetails);
+
+    // handle round related updates, if any
+    this.deferred.chain(() => {
+      if (this.round !== round) {
+        this.round = round;
+        this.moves = [];
+        resetchainreaction(chainreaction);
+        toast(`Starting Round ${round}!`, "success");
+      }
+      root.querySelector("#round").textContent = `${round}`;
+      root.querySelector("#rounds").textContent = `${rounds}`;
+    });
+
+    // make the moves
+    this.deferred.chain(() => this.makemoves(chainreaction, sessiondetails));
+
+    // update turn and indicate winner, if any
+    this.deferred.chain(() => {
+      const myturn = players[turn].username === this.user.username && !gameover;
+      root.querySelector("#turn-indicator").style.visibility = myturn
+        ? "visible"
+        : "hidden";
       chainreaction.setAttribute("turn", turn);
       chainreaction.removeAttribute("winner");
       if (gameover) {
@@ -142,42 +143,44 @@ export default class PlayPage {
           `${players[winner].username} won!`
         );
       }
-    }, 0);
+    });
 
-    // handle scoreboard and turnboard updates
-    players.forEach(({ username, score, state }) => {
-      root
-        .querySelector(`player-score[username='${username}']`)
-        .setAttribute("score", score);
-      root
-        .querySelector(`player-score[username='${username}']`)
-        .setAttribute("state", state);
+    // update turnboard
+    this.deferred.chain(() => {
+      // update scores
+      players.forEach(({ username, score, state }) => {
+        const scoreitem = root.querySelector(
+          `player-score[username='${username}']`
+        );
+        scoreitem.setAttribute("score", score);
+        scoreitem.setAttribute("state", state);
+      });
+
+      // update order of scoreboard entries
+      let turnorder = players.length;
+      upcoming.forEach((turn) => {
+        const scoreitem = root.querySelector(`player-score[turn='${turn}']`);
+        scoreitem.setAttribute("turnorder", turnorder--);
+        scoreitem.removeAttribute("eliminated");
+      });
+      disconnected.forEach((turn) => {
+        const scoreitem = root.querySelector(`player-score[turn='${turn}']`);
+        scoreitem.setAttribute("turnorder", turnorder--);
+        scoreitem.removeAttribute("eliminated");
+      });
+      eliminated.forEach((turn) => {
+        const scoreitem = root.querySelector(`player-score[turn='${turn}']`);
+        scoreitem.setAttribute("turnorder", turnorder--);
+        scoreitem.setAttribute("eliminated", "true");
+      });
     });
-    // order the entries on leaderboard
-    let turnorder = players.length;
-    upcoming.forEach((turn) => {
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .setAttribute("turnorder", turnorder--);
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .removeAttribute("eliminated");
-    });
-    disconnected.forEach((turn) => {
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .setAttribute("turnorder", turnorder--);
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .removeAttribute("eliminated");
-    });
-    eliminated.forEach((turn) => {
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .setAttribute("turnorder", turnorder--);
-      root
-        .querySelector(`player-score[turn='${turn}']`)
-        .setAttribute("eliminated", "true");
+
+    // show round button, if required
+    this.deferred.chain(() => {
+      const endroundbtn = root.querySelector("#endround");
+      if (endroundbtn) {
+        endroundbtn.style.visibility = gameover ? "visible" : "hidden";
+      }
     });
   }
 

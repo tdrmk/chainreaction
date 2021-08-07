@@ -1,6 +1,6 @@
 import htmlcontents from "./container.html";
 import { createTemplate } from "../../../utils/shadowdom";
-import { waitms } from "../../../utils/time";
+import { Deferred } from "../../../utils/time";
 
 const template = createTemplate(htmlcontents, {
   display: "block",
@@ -13,7 +13,7 @@ class LeaderBoard extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.observer = new MutationObserver(this.handlemutations);
-    this.previousUpdate = Promise.resolve();
+    this.deferred = new Deferred();
   }
 
   get observedAttribute() {
@@ -36,7 +36,7 @@ class LeaderBoard extends HTMLElement {
   }
 
   handlemutations = () => {
-    this.previousUpdate = this.previousUpdate.then(() => {
+    this.deferred.chain(() => {
       // children with `observedAttribute` attribute
       const items = this.querySelectorAll(
         `:scope > [${this.observedAttribute}]`
@@ -54,9 +54,7 @@ class LeaderBoard extends HTMLElement {
         item.style.top = `${top + (newoffsettop - item.offsetTop)}px`;
         newoffsettop += item.offsetHeight;
       });
-
-      return waitms(1000);
-    });
+    }, 1000);
   };
 }
 

@@ -8,7 +8,7 @@ const template = createTemplate(htmlcontents, {
   position: "relative",
   top: 0,
   "transition-property": "top",
-  "transition-duration": "1000ms",
+  "transition-duration": "500ms",
 });
 
 class PlayerScore extends HTMLElement {

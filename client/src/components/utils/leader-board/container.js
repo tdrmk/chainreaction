@@ -1,5 +1,6 @@
 import htmlcontents from "./container.html";
 import { createTemplate } from "../../../utils/shadowdom";
+import { waitms } from "../../../utils/time";
 
 const template = createTemplate(htmlcontents, {
   display: "block",
@@ -12,6 +13,7 @@ class LeaderBoard extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.observer = new MutationObserver(this.handlemutations);
+    this.previousUpdate = Promise.resolve();
   }
 
   get observedAttribute() {
@@ -34,20 +36,26 @@ class LeaderBoard extends HTMLElement {
   }
 
   handlemutations = () => {
-    // children with `observedAttribute` attribute
-    const items = this.querySelectorAll(`:scope > [${this.observedAttribute}]`);
-    const sorteditems = Array.from(items).sort(
-      (item1, item2) =>
-        +item2.getAttribute(this.observedAttribute) -
-        +item1.getAttribute(this.observedAttribute)
-    );
+    this.previousUpdate = this.previousUpdate.then(() => {
+      // children with `observedAttribute` attribute
+      const items = this.querySelectorAll(
+        `:scope > [${this.observedAttribute}]`
+      );
+      const sorteditems = Array.from(items).sort(
+        (item1, item2) =>
+          +item2.getAttribute(this.observedAttribute) -
+          +item1.getAttribute(this.observedAttribute)
+      );
 
-    // re-position the items (MUST be position: relative)
-    let newoffsettop = 0;
-    sorteditems.forEach((item, i) => {
-      const top = parseInt(item.style.top) || 0;
-      item.style.top = `${top + (newoffsettop - item.offsetTop)}px`;
-      newoffsettop += item.offsetHeight;
+      // re-position the items (MUST be position: relative)
+      let newoffsettop = 0;
+      sorteditems.forEach((item, i) => {
+        const top = parseInt(item.style.top) || 0;
+        item.style.top = `${top + (newoffsettop - item.offsetTop)}px`;
+        newoffsettop += item.offsetHeight;
+      });
+
+      return waitms(1000);
     });
   };
 }

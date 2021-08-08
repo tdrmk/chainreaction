@@ -26,13 +26,13 @@ const ROUTES = [
   {
     path: "/",
     page: HomePage,
-    access: ACCESS.PRIVATE,
+    access: ACCESS.OPTIONAL,
     redirect: "/login",
   },
   {
     path: "/home",
     page: HomePage,
-    access: ACCESS.PRIVATE,
+    access: ACCESS.OPTIONAL,
     redirect: "/login",
   },
   {

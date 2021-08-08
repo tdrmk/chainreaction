@@ -6,7 +6,7 @@
     xl:justify-center
   "
 >
-  <aside class="flex flex-col p-4 w-56">
+  <aside class="flex flex-col p-4 w-56 flex-shrink-0" data-private>
     <section class="flex flex-col p-4 border-2 rounded-lg">
       <!-- [profile information] -->
       <avatar-viewer
@@ -68,6 +68,64 @@
           </span>
           <span class="flex-grow text-center"> Join Room </span>
         </button>
+      </div>
+    </div>
+  </aside>
+  <aside
+    class="flex flex-col p-4 w-56 flex-shrink-0 order-2 sm:order-none"
+    data-public
+  >
+    <div class="lg:flex-grow"></div>
+    <div>
+      <div class="my-2">
+        <a
+          href="/signup"
+          is="nav-link"
+          class="
+            inline-flex
+            items-center
+            w-full
+            p-2
+            pr-4
+            bg-blue-400
+            hover:bg-blue-500
+            disabled:cursor-wait disabled:opacity-50 disabled:bg-blue-400
+          "
+        >
+          <span class="inline-block w-8 h-8">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              ></path>
+            </svg>
+          </span>
+          <span class="flex-grow text-center"> Sign Up </span>
+        </a>
+      </div>
+      <div class="my-2">
+        <a
+          href="/login"
+          is="nav-link"
+          class="
+            inline-flex
+            items-center
+            w-full
+            p-2
+            pr-4
+            bg-red-400
+            hover:bg-red-500
+            disabled:cursor-wait disabled:opacity-50 disabled:bg-red-400
+          "
+        >
+          <span class="inline-block w-8 h-8">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M14 6v15H3v-2h2V3h9v1h5v15h2v2h-4V6h-3zm-4 5v2h2v-2h-2z"
+              ></path>
+            </svg>
+          </span>
+          <span class="flex-grow text-center"> Login </span>
+        </a>
       </div>
     </div>
   </aside>

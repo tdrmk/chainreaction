@@ -62,21 +62,34 @@ export default class HomePage extends DefaultPage {
   };
 
   async render() {
+    const isAuthenticated = Boolean(this.user);
     const homepage = template.content.cloneNode(true);
 
-    // profile details
-    homepage
-      .querySelector("avatar-viewer")
-      .setAttribute("avatar-id", this.user.avatar_id);
-    homepage.querySelector("#username").textContent = this.user.username;
-    const createdAt = formatdate(this.user.createdAt);
-    homepage.querySelector("#created-at").textContent = createdAt;
+    if (isAuthenticated) {
+      // remove public components
+      homepage
+        .querySelectorAll("[data-public]")
+        .forEach((element) => element.remove());
 
-    this.joinbutton = homepage.querySelector("button#join-room");
-    this.createbutton = homepage.querySelector("button#create-room");
-    // event handlers
-    this.joinbutton.addEventListener("click", this.joinroom);
-    this.createbutton.addEventListener("click", this.createroom);
+      // update profile details
+      homepage
+        .querySelector("avatar-viewer")
+        .setAttribute("avatar-id", this.user.avatar_id);
+      homepage.querySelector("#username").textContent = this.user.username;
+      const createdAt = formatdate(this.user.createdAt);
+      homepage.querySelector("#created-at").textContent = createdAt;
+
+      this.joinbutton = homepage.querySelector("button#join-room");
+      this.createbutton = homepage.querySelector("button#create-room");
+      // event handlers
+      this.joinbutton.addEventListener("click", this.joinroom);
+      this.createbutton.addEventListener("click", this.createroom);
+    } else {
+      // remove private components
+      homepage
+        .querySelectorAll("[data-private]")
+        .forEach((element) => element.remove());
+    }
 
     return homepage;
   }

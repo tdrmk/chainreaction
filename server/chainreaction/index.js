@@ -82,7 +82,7 @@ function getsessiondetails(session) {
 }
 
 // garbage collection
-const GARBAGE_COLLECTION_INTERVAL = 5 * 60 * 1000; // 5 minutes
+const GARBAGE_COLLECTION_INTERVAL = 1 * 60 * 1000; // 1 minute(s)
 const mark = (gameid, reason) => {
   sessions[gameid].gc = true;
   debug(`marking ${gameid} reason:${reason}`);

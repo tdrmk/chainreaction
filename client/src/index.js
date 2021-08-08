@@ -1,3 +1,4 @@
+import "./polyfill";
 import "./components/register-components";
 import router from "./router";
 

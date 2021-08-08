@@ -77,6 +77,25 @@
   >
     <div class="lg:flex-grow"></div>
     <div>
+      <p class="text-sm text-gray-500 my-2">
+        <span class="text-red-400 font-semibold">You are not logged in.</span>
+        You need to
+        <a href="/login" is="nav-link" class="italic text-blue-400">log in</a>
+        or
+        <a href="/signup" is="nav-link" class="italic text-blue-400"
+          >create an account</a
+        >
+        to access multiplayer features.
+      </p>
+      <div class="mt-2 mb-6 pl-2">
+        <p class="text-sm text-gray-500 italic mb-1">
+          You can create new game rooms and invite others.
+        </p>
+        <p class="text-sm text-gray-500 italic">
+          You can join existing rooms if you have their game id.
+        </p>
+      </div>
+
       <div class="my-2">
         <a
           href="/signup"
@@ -84,7 +103,8 @@
           class="
             inline-flex
             items-center
-            w-full
+            w-48
+            sm:w-full
             p-2
             pr-4
             bg-blue-400
@@ -109,7 +129,8 @@
           class="
             inline-flex
             items-center
-            w-full
+            w-48
+            sm:w-full
             p-2
             pr-4
             bg-red-400

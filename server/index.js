@@ -64,3 +64,9 @@ const httpserver = createServer(app);
 require("./socket")(httpserver);
 
 httpserver.listen(port, () => debug(`listening on *:${port}`));
+
+if (dev)
+  require("browsermon")({
+    server: httpserver,
+    filename: path.join(__dirname, "../dist"),
+  });

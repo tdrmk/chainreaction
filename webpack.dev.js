@@ -4,6 +4,9 @@ const common = require("./webpack.common.js");
 
 module.exports = merge(common, {
   mode: "development",
+  entry: {
+    browsermon: ["./node_modules/browsermon/browser.js"],
+  },
   devtool: "source-map",
 
   plugins: [

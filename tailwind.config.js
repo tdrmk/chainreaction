@@ -1,4 +1,5 @@
 module.exports = {
+  mode: "jit",
   purge: {
     content: ["./client/**/*.js", "./client/**/*.html"],
     options: {

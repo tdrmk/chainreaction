@@ -70,6 +70,7 @@
         <div class="flex-grow"></div>
         <div class="mt-8">
           <button
+            data-admin
             type="submit"
             class="
               inline-flex
@@ -85,7 +86,14 @@
             Start Game
           </button>
           <p
-            id="notadmin"
+            data-admin
+            id="start-description"
+            class="text-xs text-blue-400 select-none text-center"
+          >
+            minimum two players required
+          </p>
+          <p
+            data-nonadmin
             class="text-xs text-blue-500 select-none text-center"
           >
             wait for admin to start the game!

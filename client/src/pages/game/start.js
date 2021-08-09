@@ -14,15 +14,18 @@ export default class StartPage {
 
   render(sessiondetails) {
     const { admin, gameid } = sessiondetails;
+    const isadmin = this.user.username === admin;
+
     const startpage = template.content.cloneNode(true);
     const gameidinput = startpage.querySelector("#gameid");
     const form = startpage.querySelector("form");
     const submitbutton = form.querySelector("button");
-    const notadminmessage = form.querySelector("#notadmin");
 
     // update template
     gameidinput.value = gameid;
-    (this.user.username === admin ? notadminmessage : submitbutton).remove();
+    startpage
+      .querySelectorAll(!isadmin ? "[data-admin]" : "[data-nonadmin]")
+      .forEach((element) => element.remove());
 
     // event handlers
     gameidinput.addEventListener("click", () => {
@@ -50,7 +53,13 @@ export default class StartPage {
 
   update(root, sessiondetails) {
     const { players } = sessiondetails;
+    const insufficientplayers = players.length < 2;
     const playerscontainer = root.querySelector("#players");
+    const startdescription = root.querySelector("#start-description");
+    if (startdescription)
+      startdescription.style.visibility = insufficientplayers
+        ? "visible"
+        : "hidden";
     playerscontainer.replaceChildren(
       ...players.map(({ username, avatar_id, isadmin }) =>
         this.renderstartplayer(username, avatar_id, isadmin)

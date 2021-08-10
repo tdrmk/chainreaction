@@ -29,3 +29,24 @@ export class Deferred {
     return this;
   }
 }
+
+export function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
+
+export function throttle(func, wait) {
+  let timeout = null;
+  return function (...args) {
+    const context = this;
+    if (timeout !== null) return;
+    timeout = setTimeout(() => {
+      func.apply(context, args);
+      timeout = null;
+    }, wait);
+  };
+}

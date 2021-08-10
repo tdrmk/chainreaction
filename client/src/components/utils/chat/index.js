@@ -1,4 +1,5 @@
 import { createTemplate } from "../../../utils/shadowdom";
+import { throttle } from "../../../utils/time";
 import htmlcontents from "./index.html";
 
 const template = createTemplate(htmlcontents, { display: "block" });
@@ -25,6 +26,7 @@ class Chat extends HTMLElement {
 
     const form = this.shadowRoot.querySelector("form");
     const textarea = this.shadowRoot.querySelector("textarea");
+    const container = this.shadowRoot.querySelector("#container");
 
     // handle user inputs
     const updateheight = () => {
@@ -47,7 +49,7 @@ class Chat extends HTMLElement {
       updateheight();
     };
 
-    textarea.addEventListener("input", (event) => updateheight());
+    textarea.addEventListener("input", updateheight);
     textarea.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault(); // don't add new line
@@ -59,6 +61,13 @@ class Chat extends HTMLElement {
       event.preventDefault(); // we'll handle form submit
       handlesubmit();
     });
+
+    const handlescrollevent = () => {
+      // don't show new message indicator when close to bottom
+      const indicator = this.shadowRoot.querySelector("#message-indicator");
+      if (this.closeToBottom()) indicator.style.visibility = "hidden";
+    };
+    container.addEventListener("scroll", throttle(handlescrollevent, 200));
   }
 
   constructmessagefragment(username, message, avatar_id) {
@@ -110,16 +119,19 @@ class Chat extends HTMLElement {
   // ----- scroll related behaviour -----
   handleScroll(handler) {
     return (...args) => {
-      const scroll = this.shouldScroll();
+      const shouldscroll = this.closeToBottom();
       handler(...args);
-      if (scroll) this.scrollToBottom();
+      const indicator = this.shadowRoot.querySelector("#message-indicator");
+      indicator.style.visibility = shouldscroll ? "hidden" : "visible";
+      if (shouldscroll) this.scrollToBottom();
     };
   }
 
-  shouldScroll() {
+  closeToBottom() {
     const container = this.shadowRoot.querySelector("#container");
     const { scrollTop, scrollHeight, clientHeight } = container;
-    return scrollTop + clientHeight === scrollHeight;
+    // considering 20px is close enough
+    return scrollTop + clientHeight + 20 >= scrollHeight;
   }
 
   scrollToBottom() {

@@ -6,7 +6,7 @@ import debug from "debug";
 import HomePage from "./pages/home";
 import GamePage from "./pages/game";
 
-let log = debug("router");
+let log = debug("chainreaction:router");
 
 /*
   - public, access allowed when no authenticated users
@@ -75,7 +75,9 @@ export default async function router() {
     };
   }).find(({ ismatch }) => ismatch);
 
-  const userinfo = await fetchCachedUserInfo();
+  // ignore cache initial load
+  const ignoreCache = !lastpage;
+  const userinfo = await fetchCachedUserInfo(ignoreCache);
 
   const { access } = routematch.route;
   if (access === ACCESS.PUBLIC && userinfo) {
@@ -122,7 +124,8 @@ function pathToRegex(path) {
   This function is more inclined towards logging in the user.
 */
 
-async function fetchCachedUserInfo() {
+const USER_INFO = "user-info";
+async function fetchCachedUserInfo(ignoreCache = false) {
   const getExpiryDate = () => {
     const date = new Date();
     date.setHours(date.getHours() + 1);
@@ -133,14 +136,19 @@ async function fetchCachedUserInfo() {
     return Date.now() >= new Date(date).getTime();
   };
 
-  const cachedinfo = JSON.parse(sessionStorage.getItem("user-info"));
-  if (cachedinfo) {
-    const { expires, ...userinfo } = cachedinfo;
-    if (!checkIsExpired(expires)) {
-      log("using cached user info");
-      return userinfo;
+  if (ignoreCache) {
+    sessionStorage.removeItem(USER_INFO);
+    log("cache invalidated!");
+  } else {
+    const cachedinfo = JSON.parse(sessionStorage.getItem(USER_INFO));
+    if (cachedinfo) {
+      const { expires, ...userinfo } = cachedinfo;
+      if (!checkIsExpired(expires)) {
+        log("using cached user info!");
+        return userinfo;
+      }
+      log("cached user info expired");
     }
-    log("cached user info expired");
   }
 
   const response = await fetch("/user/details");
@@ -149,10 +157,7 @@ async function fetchCachedUserInfo() {
     log("fetched user details");
     const userinfo = await response.json();
     const expires = getExpiryDate();
-    sessionStorage.setItem(
-      "user-info",
-      JSON.stringify({ ...userinfo, expires })
-    );
+    sessionStorage.setItem(USER_INFO, JSON.stringify({ ...userinfo, expires }));
     return userinfo;
   }
 

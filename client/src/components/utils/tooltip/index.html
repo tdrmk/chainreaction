@@ -1,0 +1,37 @@
+<style>
+  #container #tooltip {
+    display: none;
+  }
+
+  #container:hover #tooltip {
+    display: block;
+  }
+</style>
+
+<div id="container" class="flex flex-col items-center">
+  <div id="tooltip" class="relative w-0 z-50">
+    <div
+      class="
+        w-max
+        absolute
+        transform
+        -translate-x-1/2
+        bottom-2
+        text-sm text-white
+        bg-black
+        px-2
+        py-1
+        rounded
+      "
+    >
+      <span id="message"></span>
+      <svg
+        class="absolute left-0 right-0 mx-auto text-black w-2 h-2 -bottom-2"
+        viewBox="0 0 255 255"
+      >
+        <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+      </svg>
+    </div>
+  </div>
+  <slot></slot>
+</div>

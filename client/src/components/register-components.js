@@ -11,6 +11,7 @@ import "./utils/leader-board/container";
 import "./utils/leader-board/player-score";
 import "./utils/leader-board/player-turn";
 import "./utils/feedback";
+import "./utils/tooltip";
 
 import "./navigation/navlink";
 import "./navigation/redirect";

@@ -4,6 +4,9 @@ import toast from "../../components/utils/toast";
 import PlayPage from "./play";
 import StartPage from "./start";
 import handlegameover from "./gameover";
+import debug from "debug";
+
+const log = debug("chainreaction:game");
 
 export default class GamePage extends DefaultPage {
   state;
@@ -37,7 +40,7 @@ export default class GamePage extends DefaultPage {
   }
 
   handlesessiondetails = (sessiondetails) => {
-    console.log(sessiondetails);
+    log(`session details: \n %O`, sessiondetails);
     const { state } = sessiondetails;
     if (this.state !== state) {
       this.state = state;

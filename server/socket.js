@@ -110,6 +110,20 @@ module.exports = function (httpserver) {
       }
     });
 
+    socket.on("skip", (skip, ack) => {
+      try {
+        let { username, skipped } = skip;
+        session.skip(user, { username, skipped: Boolean(skipped) });
+        nsp.to(gameroom).emit("session-details", getsessiondetails(session));
+        const action = skipped ? "skipped" : "unskipped";
+        debug(`${user.username} ${action} ${username} in ${gameid}`);
+        ack?.();
+      } catch (err) {
+        debug(`error: ${err.message} from ${user.username} in ${gameid}`);
+        ack?.(err.message);
+      }
+    });
+
     socket.on("disconnect", (reason) => {
       if (!nsp.adapter.rooms.get(userroom)) {
         session.disconnect(user);

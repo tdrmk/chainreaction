@@ -53,6 +53,7 @@ class Session extends EventEmitter {
         if (!player) throw new Error("can't join in progress game");
         player.connect();
         const game = this.games[this.games.length - 1];
+        // should be no op right?
         game.handleplayerstateupdate();
         break;
       }
@@ -127,6 +128,19 @@ class Session extends EventEmitter {
     }
 
     this.games.push(new ChainReaction(this.gameconfig, this.players));
+  }
+
+  skip(user, { username, skipped }) {
+    if (this.state !== Session.STATES.IN_PROGRESS)
+      throw new Error("session not in progress");
+    if (user.username !== this.admin) throw new Error("not admin");
+
+    const player = this.getplayer({ username });
+    if (!player) throw new Error("not playing");
+
+    player.skip(skipped);
+    const game = this.games[this.games.length - 1];
+    game.handleplayerstateupdate();
   }
 
   appendmessage(username, message) {

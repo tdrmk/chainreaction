@@ -14,6 +14,9 @@ class Player extends EventEmitter {
     this.avatar_id = user.avatar_id;
 
     this.state = Player.STATES.CONNECTED;
+    // used to skip a connected players' turn
+    // typically admin should decide
+    this.skipped = false;
     this.timeoutid = null;
   }
 
@@ -26,13 +29,17 @@ class Player extends EventEmitter {
     }, Player.WAIT_MS);
   }
 
+  skip(skipped) {
+    this.skipped = skipped;
+  }
+
   connect() {
     clearTimeout(this.timeoutid);
     this.state = Player.STATES.CONNECTED;
   }
 
   get active() {
-    return this.state !== Player.STATES.DISCONNECTED;
+    return this.state !== Player.STATES.DISCONNECTED && !this.skipped;
   }
 }
 

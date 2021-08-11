@@ -26,6 +26,7 @@ function getsessiondetails(session) {
     username: player.username,
     avatar_id: player.avatar_id,
     state: player.state,
+    skipped: player.skipped,
     isadmin: player.username === session.admin,
     score: 0,
   }));

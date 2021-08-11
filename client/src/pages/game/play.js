@@ -148,12 +148,13 @@ export default class PlayPage {
     // update turnboard
     this.deferred.chain(() => {
       // update scores
-      players.forEach(({ username, score, state }) => {
+      players.forEach(({ username, score, state, skipped }) => {
         const scoreitem = root.querySelector(
           `player-score[username='${username}']`
         );
         scoreitem.setAttribute("score", score);
         scoreitem.setAttribute("state", state);
+        scoreitem.toggleAttribute("skipped", skipped);
       });
 
       // update order of scoreboard entries
@@ -197,6 +198,19 @@ export default class PlayPage {
     playerscore.setAttribute("avatar-id", avatar_id);
     playerscore.setAttribute("score", 0);
     playerscore.setAttribute("turnorder", 0);
+    playerscore.toggleAttribute("options", this.user.username === admin);
+    playerscore.addEventListener("skip", (event) => {
+      event.stopPropagation();
+      const skipped = event.detail;
+
+      playerscore.setAttribute("disabled", "");
+      this.socket.emit("skip", { username, skipped }, (err) => {
+        playerscore.removeAttribute("disabled");
+        if (err) {
+          toast(`Cannot (un)skip. Reason: ${err}`, "failure");
+        }
+      });
+    });
     return playerscore;
   };
 }

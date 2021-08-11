@@ -180,6 +180,7 @@ export default class PlayPage {
       const endroundbtn = root.querySelector("#endround");
       if (endroundbtn) {
         endroundbtn.style.visibility = gameover ? "visible" : "hidden";
+        if (round === rounds) endroundbtn.textContent = "End Game";
       }
     });
   }

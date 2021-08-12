@@ -2,6 +2,7 @@ import { createTemplate } from "../../../utils/shadowdom";
 import { getplayercolor } from "../../chainreaction/chainreaction/utils";
 import twcolors from "tailwindcss/colors";
 import htmlcontents from "./player-score.html";
+import skipmodalhtml from "./skip-player-modal.html";
 
 const template = createTemplate(htmlcontents, {
   display: "block",
@@ -10,6 +11,8 @@ const template = createTemplate(htmlcontents, {
   "transition-property": "top",
   "transition-duration": "500ms",
 });
+
+const skipmodaltemplate = createTemplate(skipmodalhtml);
 
 /**
   player-score
@@ -58,9 +61,28 @@ class PlayerScore extends HTMLElement {
       event.preventDefault();
       this.dispatchEvent(new CustomEvent("skip", { detail: false }));
     });
+
     pausebtn.addEventListener("click", (event) => {
       event.preventDefault();
-      this.dispatchEvent(new CustomEvent("skip", { detail: true }));
+      // show modal to confirm action
+      const modalfragment = skipmodaltemplate.content.cloneNode(true);
+      const modal = modalfragment.querySelector("app-modal");
+      const confirmbtn = modal.querySelector("#confirm");
+      const cancelbtn = modal.querySelector("#cancel");
+      const username = modal.querySelector("#username");
+
+      // populate fields
+      username.textContent = this.getAttribute("username");
+      username.style.color = playercolor;
+
+      // handle events
+      cancelbtn.addEventListener("click", () => modal.remove());
+      confirmbtn.addEventListener("click", () => {
+        this.dispatchEvent(new CustomEvent("skip", { detail: true }));
+        modal.remove();
+      });
+
+      document.body.appendChild(modalfragment);
     });
   }
 

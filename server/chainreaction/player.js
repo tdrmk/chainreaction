@@ -6,7 +6,7 @@ class Player extends EventEmitter {
     DISCONNECTED: "DISCONNECTED",
   };
 
-  static WAIT_MS = 30000; // 30s
+  static WAIT_MS = 60000; // 60 seconds
   constructor(user) {
     super();
     // extract out required details

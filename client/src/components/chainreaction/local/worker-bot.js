@@ -1,10 +1,12 @@
 const ROWS = 9;
 const COLUMNS = 5;
+let DEPTH = 1; // easy
 
 // utility methods
 const getpos = (index) => [Math.floor(index / COLUMNS), index % COLUMNS];
 const getindex = (row, column) => row * COLUMNS + column;
 const getopponent = (player) => (player + 1) % 2;
+const log = location.hostname === "localhost" ? console.log : () => {};
 
 // some pre computations
 const criticalmass = new Int8Array(ROWS * COLUMNS).map((_, index) => {
@@ -165,15 +167,52 @@ class ChainReaction {
   }
 }
 
-function greedychoice(player) {
-  const moves = chainreaction.potentialmoves(player);
-  const scores = moves.map((index) => {
-    const [row, column] = getpos(index);
-    const cr = chainreaction.add(row, column, player);
-    return cr.evaluate(player);
-  });
-  const maxscore = Math.max(...scores);
-  return moves[scores.indexOf(maxscore)];
+let minimaxCount = 0; // just to evaluate the performance of minimax
+
+function minimax(
+  cr,
+  depth = 4,
+  maximizingPlayer = true,
+  player = 1,
+  alpha = -Infinity,
+  beta = Infinity
+) {
+  minimaxCount += 1;
+  const opponent = getopponent(player);
+  if (cr.winner !== undefined || depth === 0)
+    return [cr.evaluate(player), null];
+
+  if (maximizingPlayer) {
+    let maxScore = -Infinity,
+      bestMove = null;
+    for (const index of cr.potentialmoves(player)) {
+      const [row, column] = getpos(index);
+      const ncr = cr.add(row, column, player);
+      const [score] = minimax(ncr, depth - 1, false, player, alpha, beta);
+      if (maxScore < score) {
+        maxScore = score;
+        bestMove = index;
+      }
+      alpha = Math.max(alpha, score);
+      if (beta <= alpha) break;
+    }
+    return [maxScore, bestMove];
+  } else {
+    let minScore = +Infinity,
+      bestMove = null;
+    for (const index of cr.potentialmoves(opponent)) {
+      const [row, column] = getpos(index);
+      const ncr = cr.add(row, column, opponent);
+      const [score] = minimax(ncr, depth - 1, true, player, alpha, beta);
+      if (minScore > score) {
+        minScore = score;
+        bestMove = index;
+      }
+      beta = Math.min(beta, score);
+      if (beta <= alpha) break;
+    }
+    return [minScore, bestMove];
+  }
 }
 
 let chainreaction = new ChainReaction();
@@ -181,6 +220,10 @@ onmessage = (event) => {
   const { type, payload } = event.data;
   switch (type) {
     case "reset": {
+      // update minimax depth based on specified difficulty
+      const { difficulty } = payload;
+      DEPTH = difficulty === "medium" ? 4 : 1;
+      log(`Difficulty:${difficulty} depth:${DEPTH}`);
       chainreaction = new ChainReaction();
       break;
     }
@@ -191,8 +234,11 @@ onmessage = (event) => {
     }
     case "choose-move": {
       const { player } = payload;
-      // const index = chainreaction.potentialmoves(player)[0];
-      const index = greedychoice(player);
+      // run minimax with depth decided by difficulty
+      const [, index] = minimax(chainreaction, DEPTH, true, player);
+      log(`minimax iterations: ${minimaxCount}`);
+      minimaxCount = 0; // reset count
+
       const [row, column] = getpos(index);
       postMessage({ type: "move", payload: { row, column } });
       break;

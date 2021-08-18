@@ -48,13 +48,14 @@ class ChainReactionLocal extends HTMLElement {
   }
 
   // Is Playing Against Computer
+  // expected select value of type `ai-<difficulty>`
   get againstAI() {
-    return this.select.value === "ai";
+    return /^ai/.test(this.select.value);
   }
 
   // Number of Players, (Derived from selected)
   get numplayers() {
-    return this.select.value === "ai" ? 2 : +this.select.value;
+    return this.againstAI ? 2 : +this.select.value;
   }
 
   eliminated = (turn) => {
@@ -102,7 +103,14 @@ class ChainReactionLocal extends HTMLElement {
         cell.setAttribute("player", 0);
         cell.removeAttribute("highlight");
       });
-    if (this.againstAI) this.worker.postMessage({ type: "reset" });
+    if (this.againstAI) {
+      // notify worker about desired difficulty
+      const difficulty = this.select.value.substr(3);
+      this.worker.postMessage({
+        type: "reset",
+        payload: { difficulty },
+      });
+    }
   };
 
   connectedCallback() {

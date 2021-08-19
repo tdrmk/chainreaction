@@ -34,6 +34,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       title: "Chain Reaction",
       template: path.join(__dirname, "client/public/index.html"),
+      favicon: path.join(__dirname, "client/public/favicon.png"),
     }),
   ],
 };

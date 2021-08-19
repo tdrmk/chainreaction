@@ -87,16 +87,19 @@
         >
         to access multiplayer features.
       </p>
-      <div class="mt-2 mb-6 pl-2">
+      <div id="features" class="mt-2 mb-6 pl-2">
         <p class="text-sm text-gray-500 italic mb-1">
           You can create new game rooms and invite others.
         </p>
-        <p class="text-sm text-gray-500 italic">
+        <p class="text-sm text-gray-500 mb-1 italic">
           You can join existing rooms if you have their game id.
+        </p>
+        <p class="text-sm text-gray-500 mb-1 italic">
+          You can play from multiple devices.
         </p>
       </div>
 
-      <div class="my-2">
+      <div class="my-2 flex justify-center">
         <a
           href="/signup"
           is="nav-link"
@@ -122,7 +125,7 @@
           <span class="flex-grow text-center"> Sign Up </span>
         </a>
       </div>
-      <div class="my-2">
+      <div class="my-2 flex justify-center">
         <a
           href="/login"
           is="nav-link"
@@ -168,6 +171,10 @@
         own colour. As soon as a player looses all their orbs they are out of
         the game.
       </p>
+      <p class="text-xs text-gray-600 my-4 italic">
+        Chain Reaction was originally developed by Buddy-Matt Entertainment for
+        Android.
+      </p>
     </article>
     <section class="flex flex-col lg:flex-row">
       <article class="xl:max-w-lg">
@@ -207,9 +214,25 @@
         <p class="text-sm text-gray-500 my-2">
           The winner is the one who eliminates every other player's orbs.
         </p>
+        <p
+          class="text-sm border rounded-md p-2 text-white bg-black sm:hidden"
+          data-public
+        >
+          You need to
+          <a href="/login" is="nav-link" class="font-extrabold text-blue-300"
+            >log in</a
+          >
+          or
+          <a href="/signup" is="nav-link" class="font-extrabold text-blue-300"
+            >create an account</a
+          >
+          to access multiplayer features.
+          <a href="#features" class="text-sm text-blue-300">View features</a>
+        </p>
+
         <footer class="text-sm italic font-bold text-gray-600 mt-4">
           Checkout <b class="text-black">Try it Now</b> to play against yourself
-          and learn the game.
+          (or computer) and learn the game.
         </footer>
       </article>
       <chain-reaction-local class="block ml-4 px-4"></chain-reaction-local>

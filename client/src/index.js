@@ -15,3 +15,14 @@ window.addEventListener("error", (event) => {
     body: JSON.stringify({ lineno, colno, filename, message }),
   });
 });
+
+window.addEventListener("unhandledrejection", (event) => {
+  console.log(event.reason);
+  fetch("/misc/error", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ message: `unhandledrejection: ${event.reason}` }),
+  });
+});

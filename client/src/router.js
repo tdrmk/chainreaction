@@ -5,6 +5,7 @@ import SignupPage from "./pages/signup";
 import debug from "debug";
 import HomePage from "./pages/home";
 import GamePage from "./pages/game";
+import { ignoreErr } from "./utils/error";
 
 let log = debug("chainreaction:router");
 
@@ -137,10 +138,12 @@ async function fetchCachedUserInfo(ignoreCache = false) {
   };
 
   if (ignoreCache) {
-    sessionStorage.removeItem(USER_INFO);
+    ignoreErr(() => sessionStorage.removeItem(USER_INFO));
     log("cache invalidated!");
   } else {
-    const cachedinfo = JSON.parse(sessionStorage.getItem(USER_INFO));
+    const cachedinfo = JSON.parse(
+      ignoreErr(() => sessionStorage.getItem(USER_INFO))
+    );
     if (cachedinfo) {
       const { expires, ...userinfo } = cachedinfo;
       if (!checkIsExpired(expires)) {
@@ -157,7 +160,12 @@ async function fetchCachedUserInfo(ignoreCache = false) {
     log("fetched user details");
     const userinfo = await response.json();
     const expires = getExpiryDate();
-    sessionStorage.setItem(USER_INFO, JSON.stringify({ ...userinfo, expires }));
+    ignoreErr(() =>
+      sessionStorage.setItem(
+        USER_INFO,
+        JSON.stringify({ ...userinfo, expires })
+      )
+    );
     return userinfo;
   }
 

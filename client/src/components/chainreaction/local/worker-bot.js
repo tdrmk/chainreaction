@@ -1,6 +1,6 @@
 const ROWS = 9;
 const COLUMNS = 5;
-let DEPTH = 1; // easy
+let DEPTH = 1; // easiest
 
 // utility methods
 const getpos = (index) => [Math.floor(index / COLUMNS), index % COLUMNS];
@@ -215,6 +215,15 @@ function minimax(
   }
 }
 
+// difficulty -> depth
+const DIFFICULTIES = {
+  easiest: 1,
+  easy: 2,
+  moderate: 3,
+  hard: 4,
+  hardest: 5,
+};
+
 let chainreaction = new ChainReaction();
 onmessage = (event) => {
   const { type, payload } = event.data;
@@ -222,7 +231,7 @@ onmessage = (event) => {
     case "reset": {
       // update minimax depth based on specified difficulty
       const { difficulty } = payload;
-      DEPTH = difficulty === "medium" ? 4 : 1;
+      DEPTH = DIFFICULTIES[difficulty] ?? DIFFICULTIES.easiest;
       log(`Difficulty:${difficulty} depth:${DEPTH}`);
       chainreaction = new ChainReaction();
       break;

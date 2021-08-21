@@ -175,8 +175,27 @@
         Chain Reaction was originally developed by Buddy-Matt Entertainment for
         Android.
       </p>
+      <p
+        class="text-sm border rounded-md p-2 text-white bg-black sm:hidden my-4"
+        data-public
+      >
+        You need to
+        <a href="/login" is="nav-link" class="font-extrabold text-blue-300"
+          >log in</a
+        >
+        or
+        <a href="/signup" is="nav-link" class="font-extrabold text-blue-300"
+          >create an account</a
+        >
+        to access multiplayer features.
+        <a href="#features" class="text-sm text-blue-300">View features</a>
+      </p>
     </article>
     <section class="flex flex-col lg:flex-row">
+      <div id="try-it-now" class="self-center lg:order-2">
+        <chain-reaction-local class="block sm:ml-8"></chain-reaction-local>
+      </div>
+
       <article class="xl:max-w-lg">
         <header class="text-xl text-gray-500 mb-2 mt-4 font-bold">
           Rules of the Game
@@ -214,28 +233,13 @@
         <p class="text-sm text-gray-500 my-2">
           The winner is the one who eliminates every other player's orbs.
         </p>
-        <p
-          class="text-sm border rounded-md p-2 text-white bg-black sm:hidden"
-          data-public
-        >
-          You need to
-          <a href="/login" is="nav-link" class="font-extrabold text-blue-300"
-            >log in</a
-          >
-          or
-          <a href="/signup" is="nav-link" class="font-extrabold text-blue-300"
-            >create an account</a
-          >
-          to access multiplayer features.
-          <a href="#features" class="text-sm text-blue-300">View features</a>
-        </p>
 
         <footer class="text-sm italic font-bold text-gray-600 mt-4">
-          Checkout <b class="text-black">Try it Now</b> to play against yourself
-          (or computer) and learn the game.
+          Checkout
+          <a href="#try-it-now" class="font-extrabold text-black">Try it Now</a>
+          to play against yourself (or computer) and learn the game.
         </footer>
       </article>
-      <chain-reaction-local class="block ml-4 px-4"></chain-reaction-local>
     </section>
   </div>
 </div>

@@ -128,6 +128,8 @@ class ChainReactionLocal extends HTMLElement {
         }
       }
     });
+
+    this.reset();
   }
 
   disconnectedCallback() {

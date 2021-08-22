@@ -39,14 +39,20 @@ export function debounce(func, wait) {
   };
 }
 
-export function throttle(func, wait) {
+/*
+  throttle limits the call to once per interval.
+  If start is true, makes the call at the beginning of interval,
+  otherwise makes the call at the end of the interval.
+*/
+export function throttle(func, wait, start = false) {
   let timeout = null;
   return function (...args) {
     const context = this;
     if (timeout !== null) return;
     timeout = setTimeout(() => {
-      func.apply(context, args);
+      if (!start) func.apply(context, args);
       timeout = null;
     }, wait);
+    if (start) func.apply(context, args);
   };
 }

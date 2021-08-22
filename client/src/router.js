@@ -100,8 +100,11 @@ export default async function router() {
   );
 
   // overlay a loader till new page is mounted
-  const loader = document.createElement("app-spinner");
-  document.querySelector("#app").appendChild(loader);
+  // (let the skeleton loader be shown during initial load)
+  if (lastpage)
+    document
+      .querySelector("#app")
+      .appendChild(document.createElement("app-spinner"));
 
   // unmount prev page, giving at a opportunity to cleanup
   if (lastpage) lastpage.unmount();

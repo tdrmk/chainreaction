@@ -54,6 +54,11 @@ export default class PlayPage {
     if (this.user.username !== admin) endroundbutton.remove();
 
     // event handlers
+    chat.addEventListener("user-typing", (event) => {
+      event.preventDefault();
+      this.socket.emit("user-typing");
+    });
+
     chat.addEventListener("user-message", (event) => {
       event.preventDefault();
       const message = event.detail;

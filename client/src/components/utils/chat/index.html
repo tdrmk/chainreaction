@@ -27,7 +27,17 @@
       <!-- chat messages go in here -->
     </slot>
   </div>
-  <div class="flex-grow-0 flex flex-row px-4 pt-2 pb-1">
+  <div class="text-xs px-4 text-gray-500 invisible" id="typing-indicator">
+    someone is typing
+    <span class="inline-block animate-bounce" style="animation-delay: 0ms"
+      >.</span
+    ><span class="inline-block animate-bounce" style="animation-delay: 100ms"
+      >.</span
+    ><span class="inline-block animate-bounce" style="animation-delay: 200ms"
+      >.</span
+    >
+  </div>
+  <div class="flex-grow-0 flex flex-row px-4 pt-0.5 pb-1">
     <form novalidate autocomplete="off" class="contents">
       <textarea
         name="message"

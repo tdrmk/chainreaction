@@ -35,6 +35,7 @@ export default class GamePage extends DefaultPage {
         reject(err.message);
       });
       this.socket.on("user-message", this.handleusermessage);
+      this.socket.on("user-typing", this.handleusertyping);
       this.socket.on("session-details", this.handlesessiondetails);
     });
   }
@@ -62,6 +63,12 @@ export default class GamePage extends DefaultPage {
     } else if (state === "DONE") {
       return handlegameover(sessiondetails);
     }
+  };
+
+  handleusertyping = ({ username, avatar_id }) => {
+    log(`${username} typing`);
+    const chat = this.root.querySelector("app-chat");
+    chat?.showtypingindicator();
   };
 
   handleusermessage = ({ username, avatar_id, message }) => {

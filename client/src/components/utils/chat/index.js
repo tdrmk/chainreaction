@@ -1,9 +1,11 @@
 import { createTemplate } from "../../../utils/shadowdom";
-import { throttle } from "../../../utils/time";
+import { debounce, throttle } from "../../../utils/time";
 import htmlcontents from "./index.html";
 
 const template = createTemplate(htmlcontents, { display: "block" });
 const MAX_HEIGHT = 96; //in px
+const TYPING_DELAY = 10000; // in ms (throttle time to dispatch user typing event)
+const INDICATOR_DELAY = 15000; // in ms (time to show indicator on event)
 
 /*
 
@@ -49,6 +51,13 @@ class Chat extends HTMLElement {
       updateheight();
     };
 
+    const handleusertyping = () => {
+      const message = textarea.value.trim();
+      if (message) {
+        this.dispatchEvent(new CustomEvent("user-typing"));
+      }
+    };
+
     textarea.addEventListener("input", updateheight);
     textarea.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && !event.shiftKey) {
@@ -56,6 +65,10 @@ class Chat extends HTMLElement {
         return handlesubmit();
       }
     });
+    textarea.addEventListener(
+      "keyup",
+      throttle(handleusertyping, TYPING_DELAY, true)
+    );
 
     form.addEventListener("submit", (event) => {
       event.preventDefault(); // we'll handle form submit
@@ -115,6 +128,17 @@ class Chat extends HTMLElement {
 
     this.appendChild(statusmessage);
   };
+
+  showtypingindicator = () => {
+    const typingindicator = this.shadowRoot.querySelector("#typing-indicator");
+    typingindicator.style.visibility = "visible";
+    this.hidetypingindicator();
+  };
+
+  hidetypingindicator = debounce(() => {
+    const typingindicator = this.shadowRoot.querySelector("#typing-indicator");
+    typingindicator.style.visibility = "hidden";
+  }, INDICATOR_DELAY); // debounce hide indicator
 
   // ----- scroll related behaviour -----
   handleScroll(handler) {

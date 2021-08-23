@@ -81,12 +81,12 @@ class Session extends EventEmitter {
   start(user, { rows, columns, rounds }) {
     if (this.state !== Session.STATES.NEW) throw new Error("session started");
     if (this.players.length <= 1) throw new Error("insufficient players");
-    if (rows <= 1) throw new Error("insufficient rows");
-    if (rows >= 15) throw new Error("excessive rows");
-    if (columns <= 1) throw new Error("insufficient columns");
-    if (columns >= 15) throw new Error("excessive columns");
+    if (rows < 7) throw new Error("insufficient rows");
+    if (rows > 15) throw new Error("excessive rows");
+    if (columns < 4) throw new Error("insufficient columns");
+    if (columns > 10) throw new Error("excessive columns");
     if (rounds < 1) throw new Error("insufficient rounds");
-    if (rounds > 5) throw new Error("excessive rounds");
+    if (rounds > 8) throw new Error("excessive rounds");
     if (user.username !== this.admin) throw new Error("not admin");
 
     this.state = Session.STATES.IN_PROGRESS;

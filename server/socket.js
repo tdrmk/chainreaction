@@ -70,13 +70,24 @@ module.exports = function (httpserver) {
     });
 
     socket.on("user-message", (message) => {
-      session.appendmessage(user.username, message);
-      debug(`${user.username} sent message "${message}" to ${gameid}`);
+      const { username, avatar_id } = user;
+      const nummessages = session.appendmessage(username, avatar_id, message);
+      debug(`${username} sent message "${message}" to ${gameid}`);
       nsp.to(gameroom).emit("user-message", {
-        username: user.username,
-        avatar_id: user.avatar_id,
+        username,
+        avatar_id,
         message,
+        index: nummessages - 1,
       });
+    });
+
+    socket.on("fetch-messages", (start, end, cb) => {
+      debug(`${user.username} fetching messages from ${start} to ${end}`);
+      const messages = session.messages
+        .slice(start, end)
+        .map((message, i) => ({ ...message, index: start + i }));
+      // send the messages requested
+      cb?.(messages);
     });
 
     socket.on("start", (config, ack) => {

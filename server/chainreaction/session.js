@@ -143,8 +143,8 @@ class Session extends EventEmitter {
     game.handleplayerstateupdate();
   }
 
-  appendmessage(username, message) {
-    this.messages.push({ username, message });
+  appendmessage(username, avatar_id, message) {
+    return this.messages.push({ username, avatar_id, message });
   }
 
   getplayer(user) {

@@ -79,6 +79,7 @@ function getsessiondetails(session) {
     round: session.games.length,
     players,
     gamedetails,
+    messagescount: session.messages.length,
   };
 }
 

@@ -103,20 +103,33 @@ class Chat extends HTMLElement {
     return fragment;
   }
 
-  addOtherMessage = (username, message, avatar_id) => {
+  insertAt = (node, index) => {
+    if (index === null || this.children.length === index) {
+      this.appendChild(node);
+    } else if (this.children.length > index) {
+      this.replaceChild(node, this.children[index]);
+    } else {
+      for (let i = this.children.length; i < index; i++) {
+        this.appendChild(document.createElement("skeleton-message"));
+      }
+      this.appendChild(node);
+    }
+  };
+
+  addOtherMessage = (username, message, avatar_id, index = null) => {
     const othermessage = document.createElement("other-message");
     othermessage.appendChild(
       this.constructmessagefragment(username, message, avatar_id)
     );
-    this.appendChild(othermessage);
+    this.insertAt(othermessage, index);
   };
 
-  addUserMessage = (message) => {
+  addUserMessage = (message, index = null) => {
     const usermessage = document.createElement("user-message");
     usermessage.appendChild(
       this.constructmessagefragment(this.username, message, this.avatar_id)
     );
-    this.appendChild(usermessage);
+    this.insertAt(usermessage, index);
   };
 
   addStatusMessage = (message) => {

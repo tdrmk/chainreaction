@@ -7,6 +7,7 @@ import "./utils/chat";
 import "./utils/chat/user-message";
 import "./utils/chat/other-message";
 import "./utils/chat/status-message";
+import "./utils/chat/skeleton-message";
 import "./utils/leader-board/container";
 import "./utils/leader-board/player-score";
 import "./utils/leader-board/player-turn";

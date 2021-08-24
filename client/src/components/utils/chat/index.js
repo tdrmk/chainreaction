@@ -4,15 +4,17 @@ import htmlcontents from "./index.html";
 
 const template = createTemplate(htmlcontents, { display: "block" });
 const MAX_HEIGHT = 96; //in px
-const TYPING_DELAY = 10000; // in ms (throttle time to dispatch user typing event)
-const INDICATOR_DELAY = 15000; // in ms (time to show indicator on event)
+const TYPING_DELAY = 5000; // in ms (throttle time to dispatch user typing event)
+const INDICATOR_DELAY = 7000; // in ms (time to show indicator on user typing event)
 
 /*
 
   <app-chat username="" avatar-id=""> </app-chat>
   Use `addUserMessage`, `addOtherMessage` and `addStatusMessage` methods to add messages.
+  Use `addTypingUser` to indicate specified user is typing.
 
   Dispatches `user-message` custom event, when user clicks submit button with input message.
+  Dispatches `user-typing` custom event, when user types, in a throttled manner.
 
 */
 class Chat extends HTMLElement {
@@ -20,6 +22,8 @@ class Chat extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+    // map of typing users to their respective timeouts (username -> timeout id)
+    this.typing = new Map();
 
     // wrap methods to handle scroll as well
     this.addUserMessage = this.handleScroll(this.addUserMessage);
@@ -65,6 +69,8 @@ class Chat extends HTMLElement {
         return handlesubmit();
       }
     });
+
+    // notify others when current user is typing...
     textarea.addEventListener(
       "keyup",
       throttle(handleusertyping, TYPING_DELAY, true)
@@ -109,6 +115,8 @@ class Chat extends HTMLElement {
     } else if (this.children.length > index) {
       this.replaceChild(node, this.children[index]);
     } else {
+      // show skeleton messages for missing messages
+      // which will be eventually populated ...
       for (let i = this.children.length; i < index; i++) {
         this.appendChild(document.createElement("skeleton-message"));
       }
@@ -121,6 +129,7 @@ class Chat extends HTMLElement {
     othermessage.appendChild(
       this.constructmessagefragment(username, message, avatar_id)
     );
+    // this.removeTypingUser({ username });
     this.insertAt(othermessage, index);
   };
 
@@ -132,6 +141,7 @@ class Chat extends HTMLElement {
     this.insertAt(usermessage, index);
   };
 
+  /* NOTE: Avoid using status when `index` is used with addUserMessage or addOtherMessage */
   addStatusMessage = (message) => {
     const statusmessage = document.createElement("status-message");
 
@@ -142,16 +152,47 @@ class Chat extends HTMLElement {
     this.appendChild(statusmessage);
   };
 
-  showtypingindicator = () => {
+  updateTypingIndicator = () => {
     const typingindicator = this.shadowRoot.querySelector("#typing-indicator");
-    typingindicator.style.visibility = "visible";
-    this.hidetypingindicator();
+    const typingmessage = this.shadowRoot.querySelector("#typing-message");
+    if (this.typing.size) {
+      typingindicator.style.visibility = "visible";
+      const usernames = [...this.typing.keys()];
+      if (this.typing.size === 1) {
+        typingmessage.textContent = `${usernames[0]} is typing`;
+      } else if (this.typing.size === 2) {
+        typingmessage.textContent = `${usernames[0]} and 1 other are typing`;
+      } else {
+        const otherscount = usernames.length - 1;
+        typingmessage.textContent = `${usernames[0]} and ${otherscount} others are typing`;
+      }
+    } else {
+      typingindicator.style.visibility = "hidden";
+    }
   };
 
-  hidetypingindicator = debounce(() => {
-    const typingindicator = this.shadowRoot.querySelector("#typing-indicator");
-    typingindicator.style.visibility = "hidden";
-  }, INDICATOR_DELAY); // debounce hide indicator
+  addTypingUser = ({ username, avatar_id }) => {
+    if (this.typing.has(username)) {
+      clearTimeout(this.typing.get(username)); // timeout will be reset
+    }
+
+    this.typing.set(
+      username,
+      setTimeout(() => {
+        this.typing.delete(username);
+        this.updateTypingIndicator();
+      }, INDICATOR_DELAY)
+    );
+    this.updateTypingIndicator();
+  };
+
+  removeTypingUser = ({ username }) => {
+    if (this.typing.has(username)) {
+      clearTimeout(this.typing.get(username));
+      this.typing.delete(username);
+      this.updateTypingIndicator();
+    }
+  };
 
   // ----- scroll related behaviour -----
   handleScroll(handler) {

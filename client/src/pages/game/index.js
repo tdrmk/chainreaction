@@ -66,9 +66,8 @@ export default class GamePage extends DefaultPage {
   };
 
   handleusertyping = ({ username, avatar_id }) => {
-    log(`${username} typing`);
     const chat = this.root.querySelector("app-chat");
-    chat?.showtypingindicator();
+    chat?.addTypingUser?.({ username, avatar_id });
   };
 
   handleusermessage = (usermessage) => {

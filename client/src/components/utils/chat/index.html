@@ -27,8 +27,11 @@
       <!-- chat messages go in here -->
     </slot>
   </div>
-  <div class="text-xs px-4 text-gray-500 invisible" id="typing-indicator">
-    someone is typing
+  <div
+    class="text-xs px-4 text-gray-500 invisible italic"
+    id="typing-indicator"
+  >
+    <span id="typing-message">someone is typing</span>
     <span class="inline-block animate-bounce" style="animation-delay: 0ms"
       >.</span
     ><span class="inline-block animate-bounce" style="animation-delay: 100ms"

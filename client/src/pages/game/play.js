@@ -2,12 +2,16 @@ import htmlcontents from "./play.html";
 import { createTemplate } from "../../utils/shadowdom";
 import toast from "../../components/utils/toast";
 import { Deferred } from "../../utils/time";
+import debug from "debug";
+
+const log = debug("chainreaction:play");
 
 const template = createTemplate(htmlcontents, { display: "block" });
 
 export default class PlayPage {
   round;
   moves = [];
+  messages = []; // stores ALL messages
 
   constructor(user, socket) {
     this.user = user;
@@ -115,6 +119,7 @@ export default class PlayPage {
         winner,
         gameover,
       },
+      messagescount,
     } = sessiondetails;
     const chainreaction = root.querySelector("chain-reaction");
 
@@ -189,7 +194,51 @@ export default class PlayPage {
         if (round === rounds) endroundbtn.textContent = "End Game";
       }
     });
+
+    // fetch messages if all not available
+    if (this.messages.length < messagescount) {
+      const chat = root.querySelector("app-chat");
+      this.fetchmessages(this.messages.length, messagescount).then(
+        (usermessages) => {
+          usermessages.forEach(({ username, avatar_id, message, index }) => {
+            this.addmessage(chat, { username, avatar_id, message, index });
+          });
+        }
+      );
+    }
   }
+
+  addmessage = (chat, { username, avatar_id, message, index }) => {
+    log(`got message at ${index}...`);
+    this.messages[index] = { username, avatar_id, message };
+    if (username === this.user.username) {
+      chat?.addUserMessage?.(message, index);
+    } else {
+      chat?.addOtherMessage?.(username, message, avatar_id, index);
+    }
+  };
+
+  fetchmessages = (start, end) => {
+    return new Promise((resolve) => {
+      log(`fetching messages from ${start} to ${end}...`);
+      this.socket.emit("fetch-messages", start, end, (usermessages) => {
+        resolve(usermessages);
+      });
+    });
+  };
+
+  onusermessage = (root, { username, avatar_id, message, index }) => {
+    const chat = root.querySelector("app-chat");
+    if (this.messages.length < index) {
+      // some missing messages
+      this.fetchmessages(this.messages.length, index).then((usermessages) => {
+        usermessages.forEach(({ username, avatar_id, message, index }) => {
+          this.addmessage(chat, { username, avatar_id, message, index });
+        });
+      });
+    }
+    this.addmessage(chat, { username, avatar_id, message, index });
+  };
 
   // ========= utilities ==========
   renderplayerscore = (username, turn, avatar_id, admin) => {

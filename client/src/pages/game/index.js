@@ -71,13 +71,8 @@ export default class GamePage extends DefaultPage {
     chat?.showtypingindicator();
   };
 
-  handleusermessage = ({ username, avatar_id, message }) => {
-    const chat = this.root.querySelector("app-chat");
-    if (username === this.user.username) {
-      chat?.addUserMessage(message);
-    } else {
-      chat?.addOtherMessage(username, message, avatar_id);
-    }
+  handleusermessage = (usermessage) => {
+    this.page?.onusermessage?.(this.root, usermessage);
   };
 
   async render() {

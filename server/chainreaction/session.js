@@ -130,6 +130,28 @@ class Session extends EventEmitter {
     this.games.push(new ChainReaction(this.gameconfig, this.players));
   }
 
+  addround(user) {
+    if (this.state !== Session.STATES.IN_PROGRESS)
+      throw new Error("session not in progress");
+
+    if (user.username !== this.admin) throw new Error("not admin");
+    const game = this.games[this.games.length - 1];
+    if (!game.gameover) throw new Error("game in progress");
+
+    const activeplayers = this.players.filter((player) => player.active).length;
+    if (activeplayers <= 1) {
+      // insufficient players
+      this.state = Session.STATES.DONE;
+      return;
+    }
+
+    if (this.rounds !== this.games.length)
+      throw new Error("wait for last game");
+
+    this.rounds += 1;
+    this.games.push(new ChainReaction(this.gameconfig, this.players));
+  }
+
   skip(user, { username, skipped }) {
     if (this.state !== Session.STATES.IN_PROGRESS)
       throw new Error("session not in progress");

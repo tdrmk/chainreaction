@@ -128,6 +128,18 @@ module.exports = function (httpserver) {
       }
     });
 
+    socket.on("addround", (ack) => {
+      try {
+        session.addround(user);
+        nsp.to(gameroom).emit("session-details", getsessiondetails(session));
+        debug(`${user.username} addround ${gameid}`);
+        ack?.();
+      } catch (err) {
+        debug(`error: ${err.message} from ${user.username} in ${gameid}`);
+        ack?.(err.message);
+      }
+    });
+
     socket.on("skip", (skip, ack) => {
       try {
         let { username, skipped } = skip;

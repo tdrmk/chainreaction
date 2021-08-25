@@ -37,6 +37,7 @@ export default class PlayPage {
     const scoreboard = playpage.querySelector("#scoreboard");
     const chat = playpage.querySelector("app-chat");
     const endroundbutton = playpage.querySelector("#endround");
+    const addroundbutton = playpage.querySelector("#addround");
 
     // populate template
     scoreboard.append(
@@ -55,7 +56,10 @@ export default class PlayPage {
     );
     chainreaction.setAttribute("turn", turn);
 
-    if (this.user.username !== admin) endroundbutton.remove();
+    if (this.user.username !== admin) {
+      endroundbutton.remove();
+      addroundbutton.remove();
+    }
 
     // event handlers
     chat.addEventListener("user-typing", (event) => {
@@ -85,6 +89,17 @@ export default class PlayPage {
         endroundbutton.removeAttribute("disabled");
         if (err) {
           toast(`Cannot End Round. Reason: ${err}`, "failure");
+        }
+      });
+    });
+
+    addroundbutton.addEventListener("click", (event) => {
+      event.preventDefault();
+      addroundbutton.setAttribute("disabled", "");
+      this.socket.emit("addround", (err) => {
+        addroundbutton.removeAttribute("disabled");
+        if (err) {
+          toast(`Cannot Add Round. Reason: ${err}`, "failure");
         }
       });
     });
@@ -189,9 +204,14 @@ export default class PlayPage {
     // show round button, if required
     this.deferred.chain(() => {
       const endroundbtn = root.querySelector("#endround");
+      const addroundbtn = root.querySelector("#addround");
       if (endroundbtn) {
-        endroundbtn.style.visibility = gameover ? "visible" : "hidden";
+        endroundbtn.style.display = gameover ? "flex" : "none";
         if (round === rounds) endroundbtn.textContent = "End Game";
+      }
+      if (addroundbtn) {
+        addroundbtn.style.display =
+          round === rounds && gameover ? "flex" : "none";
       }
     });
 

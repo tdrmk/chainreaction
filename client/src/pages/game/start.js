@@ -20,12 +20,19 @@ export default class StartPage {
     const gameidinput = startpage.querySelector("#gameid");
     const form = startpage.querySelector("form");
     const submitbutton = form.querySelector("button");
+    const whatsapplink = startpage.querySelector("#whatsapp-deeplink");
+    const telegramlink = startpage.querySelector("#telegram-deeplink");
 
     // update template
     gameidinput.value = gameid;
     startpage
       .querySelectorAll(!isadmin ? "[data-admin]" : "[data-nonadmin]")
       .forEach((element) => element.remove());
+
+    const encodedURL = encodeURIComponent(window.location.href);
+    const encodedText = encodeURIComponent("Play Chain Reaction Online!");
+    whatsapplink.href = `https://wa.me/?text=${encodedURL}`;
+    telegramlink.href = `https://t.me/share/url?url=${encodedURL}&text=${encodedText}`;
 
     // event handlers
     gameidinput.addEventListener("click", () => {

@@ -163,9 +163,12 @@ export default class PlayPage {
       chainreaction.removeAttribute("winner");
       if (gameover) {
         chainreaction.setAttribute("winner", winner);
+        const winnerusername = players[winner].username;
         chainreaction.setAttribute(
           "message",
-          `${players[winner].username} won!`
+          winnerusername === this.user.username
+            ? "Congratulations!"
+            : `${winnerusername} won!`
         );
       }
     });

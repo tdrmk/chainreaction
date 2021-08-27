@@ -62,9 +62,14 @@ class ChainReaction extends HTMLElement {
       this.style.color = getplayercolor(this.turn);
     } else if (attr === "winner") {
       const overlay = this.shadowRoot.querySelector("#overlay");
+      const winnerImg = this.shadowRoot.querySelector("#winner");
+      const loserImg = this.shadowRoot.querySelector("#loser");
       if (this.gameover) {
         overlay.style.display = "flex";
         overlay.style.color = getplayercolor(this.winner);
+        const won = this.winner === this.player;
+        winnerImg.style.display = won ? "flex" : "none";
+        loserImg.style.display = !won ? "flex" : "none";
       } else {
         overlay.style.display = "none";
       }

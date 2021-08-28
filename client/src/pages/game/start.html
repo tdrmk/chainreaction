@@ -17,7 +17,7 @@
       <p class="text-xs text-gray-500 select-none text-center">
         Invite your friends, send them the game id
       </p>
-      <p class="text-center mt-2 sm:hidden">
+      <div class="flex justify-center items-center mt-2 sm:hidden">
         <a
           id="whatsapp-deeplink"
           class="
@@ -27,6 +27,7 @@
             p-1
             bg-green-500
             hover:bg-green-800
+            mr-1
           "
           target="_blank"
           rel="noopener noreferrer"
@@ -47,6 +48,7 @@
             p-1
             bg-blue-400
             hover:bg-blue-600
+            mr-1
           "
           href="https://t.me/share/url?url=sdsda&text=dsada"
           target="_blank"
@@ -59,7 +61,25 @@
             ></path>
           </svg>
         </a>
-      </p>
+        <button
+          id="share-link"
+          class="
+            inline-block
+            rounded-lg
+            overflow-hidden
+            p-1
+            bg-red-400
+            hover:bg-red-600
+          "
+        >
+          <svg class="w-6 h-6" viewBox="0 0 24 24">
+            <path
+              class="fill-current text-white"
+              d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"
+            ></path>
+          </svg>
+        </button>
+      </div>
       <form novalidate autocomplete="off" class="contents">
         <div class="my-4">
           <label for="rows" class="block mb-0.5 text-sm font-bold text-gray-700"

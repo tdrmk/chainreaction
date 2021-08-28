@@ -2,6 +2,7 @@ import htmlcontents from "./start.html";
 import { createTemplate } from "../../utils/shadowdom";
 import toast from "../../components/utils/toast";
 import playerhtml from "./start-player.html";
+import copyToClipboard from "../../utils/copytoclipboard";
 
 const template = createTemplate(htmlcontents, { display: "block" });
 const playertemplate = createTemplate(playerhtml);
@@ -19,9 +20,10 @@ export default class StartPage {
     const startpage = template.content.cloneNode(true);
     const gameidinput = startpage.querySelector("#gameid");
     const form = startpage.querySelector("form");
-    const submitbutton = form.querySelector("button");
+    const submitbutton = form.querySelector("button[type='submit']");
     const whatsapplink = startpage.querySelector("#whatsapp-deeplink");
     const telegramlink = startpage.querySelector("#telegram-deeplink");
+    const sharelinkbutton = startpage.querySelector("#share-link");
 
     // update template
     gameidinput.value = gameid;
@@ -39,6 +41,10 @@ export default class StartPage {
       gameidinput.select();
       document.execCommand("copy");
       toast("Copied Game ID!");
+    });
+    sharelinkbutton.addEventListener("click", () => {
+      copyToClipboard(location.href);
+      toast("Copied Game Link!");
     });
 
     form.addEventListener("submit", (event) => {

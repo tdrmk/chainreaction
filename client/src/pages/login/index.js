@@ -1,5 +1,5 @@
 import toast from "../../components/utils/toast";
-import { navigateTo } from "../../router";
+import { loadSavedPath, navigateTo } from "../../router";
 import DefaultPage from "../default";
 
 export default class LoginPage extends DefaultPage {
@@ -17,7 +17,10 @@ export default class LoginPage extends DefaultPage {
           body: JSON.stringify({ username, password, remember_me }),
         });
         if (response.ok) {
-          navigateTo("/home");
+          const pathname = loadSavedPath();
+          // NOTE: potential vulnerability
+          // TODO: best to use regex check to validate path
+          navigateTo(pathname ?? "/home");
         } else {
           toast("invalid username or password", "failure");
         }

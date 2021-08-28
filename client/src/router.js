@@ -83,10 +83,12 @@ export default async function router() {
   const { access } = routematch.route;
   if (access === ACCESS.PUBLIC && userinfo) {
     // not accessible to logged users
+    saveCurrentPath();
     return navigateTo(routematch.route.redirect);
   }
   if (access === ACCESS.PRIVATE && !userinfo) {
     // protected routes
+    saveCurrentPath();
     return navigateTo(routematch.route.redirect);
   }
 
@@ -173,6 +175,21 @@ async function fetchCachedUserInfo(ignoreCache = false) {
   }
 
   log("user not logged in");
+}
+
+const REDIRECT_LINK = "redirect-link";
+function saveCurrentPath() {
+  ignoreErr(() => {
+    sessionStorage.setItem(REDIRECT_LINK, location.pathname);
+  });
+}
+
+export function loadSavedPath() {
+  return ignoreErr(() => {
+    const link = sessionStorage.getItem(REDIRECT_LINK);
+    sessionStorage.removeItem(REDIRECT_LINK);
+    return link;
+  });
 }
 
 export function navigateTo(url, state = null) {

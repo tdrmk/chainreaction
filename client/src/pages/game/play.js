@@ -3,6 +3,7 @@ import { createTemplate } from "../../utils/shadowdom";
 import toast from "../../components/utils/toast";
 import { Deferred } from "../../utils/time";
 import debug from "debug";
+import notificationsound from "../../assets/notification.mp3";
 
 const log = debug("chainreaction:play");
 
@@ -17,6 +18,7 @@ export default class PlayPage {
     this.user = user;
     this.socket = socket;
     this.deferred = new Deferred("play");
+    this.turnnotification = new TurnNotification();
   }
 
   render(sessiondetails) {
@@ -38,6 +40,7 @@ export default class PlayPage {
     const chat = playpage.querySelector("app-chat");
     const endroundbutton = playpage.querySelector("#endround");
     const addroundbutton = playpage.querySelector("#addround");
+    const soundbutton = playpage.querySelector("sound-button");
 
     // populate template
     scoreboard.append(
@@ -60,6 +63,8 @@ export default class PlayPage {
       endroundbutton.remove();
       addroundbutton.remove();
     }
+
+    this.turnnotification.soundbutton = soundbutton;
 
     // event handlers
     chat.addEventListener("user-typing", (event) => {
@@ -159,6 +164,7 @@ export default class PlayPage {
       root.querySelector("#turn-indicator").style.visibility = myturn
         ? "visible"
         : "hidden";
+      this.turnnotification.onturnupdate(myturn);
       chainreaction.setAttribute("turn", turn);
       chainreaction.removeAttribute("winner");
       if (gameover) {
@@ -302,4 +308,50 @@ function resetchainreaction(chainreaction) {
     cell.setAttribute("player", 0);
     cell.removeAttribute("highlight");
   });
+}
+
+class TurnNotification {
+  constructor() {
+    this.audio = new Audio(notificationsound);
+    this.audio.volume = 0.5; // keep a low volume
+    this.enabled = true;
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement/Audio#determining_when_playback_can_begin
+    this.loaded = false;
+    this.audio.addEventListener("canplaythrough", () => {
+      this.loaded = true;
+    });
+
+    // boolean indicating `already notified user of turn?`
+    this.played = false;
+  }
+
+  async onturnupdate(myturn) {
+    if (!this.loaded || !this.enabled) return;
+
+    if (!myturn) {
+      this.played = false;
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      return;
+    }
+
+    if (this.played) return;
+
+    try {
+      await this.audio.play();
+      this.played = true;
+    } catch (err) {}
+  }
+
+  set soundbutton(soundbutton) {
+    soundbutton.addEventListener("volumechange", (event) => {
+      this.enabled = soundbutton.enabled;
+      if (!this.enabled) {
+        this.played = false;
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      }
+    });
+  }
 }

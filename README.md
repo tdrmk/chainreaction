@@ -2,6 +2,8 @@
 
 An online multiplayer chain reaction game in javascript.
 
+Available at https://the-chain-reaction.herokuapp.com/
+
 ## Development
 
 ### Prerequisites
